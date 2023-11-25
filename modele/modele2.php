@@ -30,6 +30,15 @@ class Products {
 	  return $data->fetchAll(PDO::FETCH_OBJ);
 	}
 
+	/** Récupére la liste des produits par catégorie sous forme d'un tableau */
+	function get_products_by_cat($cat)
+	{
+	  $sql="SELECT * from products where cat_id=$cat";
+	  $data=self::$connexion->prepare($sql);
+	  $data->execute();
+	  return $data->fetchAll(PDO::FETCH_OBJ);
+	}
+
 	/** Ajoute un produit à la table contacts */
 	function add_product($data)
 	{
