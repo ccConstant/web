@@ -11,22 +11,23 @@ class Products {
 	/** Constructeur établissant la connexion */
 	function __construct()
 	{
-    $dsn="mysql:dbname=".BASE.";host=".SERVER;
-    try{
-			self::$connexion=new PDO($dsn,USER,PASSWD);
-    }
-    catch(PDOException $e){
-      printf("Échec de la connexion : %s\n", $e->getMessage());
-      $this->connexion = NULL;
-    }
+		$dsn="mysql:dbname=".BASE.";host=".SERVER;
+		try{
+				self::$connexion=new PDO($dsn,USER,PASSWD);
+		}
+		catch(PDOException $e){
+		printf("Échec de la connexion : %s\n", $e->getMessage());
+		$this->connexion = NULL;
+		}
 	}
 
 	/** Récupére la liste des produits sous forme d'un tableau */
 	function get_all_products()
 	{
 	  $sql="SELECT * from products";
-	  $data=self::$connexion->query($sql);
-	  return $data;
+	  $data=self::$connexion->prepare($sql);
+	  $data->execute();
+	  return $data->fetchAll(PDO::FETCH_OBJ);
 	}
 
 	/** Ajoute un produit à la table contacts */

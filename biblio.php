@@ -3,7 +3,13 @@
 // biblio.php
 /* récupérer le tableau des données */
 require 'modele/modele2.php';
-$products = get_all_products();
+
+$product=new Products();
+$products=$product->get_all_products();
+$data = array(
+    'products' => $products
+);
+//var_dump($products);
 /* inclure l'autoloader */
 require_once 'vendor/autoload.php';
 /* templates chargés à partir du système de fichiers (répertoire vue) */
@@ -14,4 +20,4 @@ $loader = new \Twig\Loader\FilesystemLoader('vue');
 /* stocker la configuration */
 $twig = new Twig\Environment($loader);//, $options_dev);
 /* charger+compiler le template, exécuter, envoyer le résultat au navigateur */
-echo $twig->render('biblio.twig', $products);
+echo $twig->render('biblio.twig', $data);

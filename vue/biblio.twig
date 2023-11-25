@@ -6,7 +6,7 @@
     </head>
     <body>
         <h1>{{ titre_page }} - {{ date }}</h1>
-        {% if biblio is not empty %}
+        {% if products is not empty %}
             <table>
                 <thead>
                     <tr><th>Name</th>
@@ -14,7 +14,7 @@
                 </thead>
                 <tbody>
                     {# afficher les titres et noms des livres #}
-                    {% for item in biblio|sort %}
+                    {% for item in products|sort %}
                     <tr>
                     <td>{{ item.name }}</td>
                     <td>{{ item.description|capitalize }}</td>

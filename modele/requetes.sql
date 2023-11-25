@@ -16,12 +16,12 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
+/*!40101 SET NAMES utf8 */;
 
 --
 -- Base de données :  `web4shop`
 --
-CREATE DATABASE IF NOT EXISTS `web4shop` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE IF NOT EXISTS `web4shop` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 USE `web4shop`;
 
 -- --------------------------------------------------------
@@ -34,7 +34,7 @@ CREATE TABLE `admin` (
   `id` int(11) NOT NULL,
   `username` varchar(100) NOT NULL,
   `password` varchar(40) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `admin`
@@ -52,7 +52,7 @@ INSERT INTO `admin` (`id`, `username`, `password`) VALUES
 CREATE TABLE `categories` (
   `id` tinyint(4) NOT NULL,
   `name` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `categories`
@@ -80,7 +80,7 @@ CREATE TABLE `customers` (
   `phone` varchar(20) NOT NULL,
   `email` varchar(150) NOT NULL,
   `registered` tinyint(4) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `customers`
@@ -106,7 +106,7 @@ CREATE TABLE `delivery_addresses` (
   `postcode` varchar(10) NOT NULL,
   `phone` varchar(20) NOT NULL,
   `email` varchar(150) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `delivery_addresses`
@@ -129,7 +129,7 @@ CREATE TABLE `logins` (
   `customer_id` varchar(100) NOT NULL,
   `username` varchar(100) NOT NULL,
   `password` varchar(40) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `logins`
@@ -150,7 +150,7 @@ CREATE TABLE `orderitems` (
   `order_id` int(11) NOT NULL,
   `product_id` int(11) NOT NULL,
   `quantity` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `orderitems`
@@ -186,7 +186,7 @@ CREATE TABLE `orders` (
   `status` tinyint(4) NOT NULL,
   `session` varchar(100) NOT NULL,
   `total` float DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `orders`
@@ -212,7 +212,7 @@ CREATE TABLE `products` (
   `image` varchar(30) NOT NULL,
   `price` decimal(5,2) NOT NULL,
   `quantity` int(3) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `products`
@@ -258,7 +258,7 @@ CREATE TABLE `reviews` (
   `stars` int(1) NOT NULL,
   `title` varchar(50) NOT NULL,
   `description` varchar(150) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `reviews`
