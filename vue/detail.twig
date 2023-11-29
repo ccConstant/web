@@ -1,0 +1,24 @@
+<!doctype html>
+<html>
+    <head>
+        <title>{{ titre_doc }}</title>
+        <meta charset='UTF-8'>
+    </head>
+    <body>
+        <h1>{{ titre_page }} - {{ date }}</h1>
+            <table>
+                <thead>
+                    <tr><th> Image</th></tr>
+                    <tr><th>Name</th>
+                    <th>Description</th></tr>
+                </thead>
+                <tbody>
+                    <tr> 
+                    <td> <img src={{lien}}></td>
+                    <td>{{ product[0].name|capitalize }}</td>
+                    <td>{{ product[0].description|capitalize }}</td>
+                    </tr>
+                </tbody>
+            </table>
+    </body>
+</html>

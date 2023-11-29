@@ -1,4 +1,6 @@
 <?php
+
+session_start();
 require_once 'modele/modele2.php';
 include 'vendor/autoload.php';
 // le dossier ou on trouve les templates
@@ -12,6 +14,7 @@ include 'controllers.php';
 $action = $_GET['action'] ?? 'welcome';
 $categorie = $_GET['categorie'] ?? 0 ;
 $message = "";
+$product=new Products();
 switch ($action) {
     case "welcome":
         $template = $twig->load('welcome.twig');
@@ -20,12 +23,36 @@ switch ($action) {
         ));
         break;
     case "list": 
-        list_action($twig, $categorie);
+        echo "coucou";
+        list_action($twig, $categorie, $product);
         break;
-    /*case "detail":
-        //detail_action($cont,$twig, $_GET['id']);
+    case "detail":
+        detail_action($product,$twig, $_GET['id']);
         break;
-    case "suppr":
+    case "addToCart":
+        if(!isset($_SESSION['cart'])){
+            $_SESSION['cart'] = array();
+        }
+        if(!isset($_SESSION['cart'][$_GET['id']])){
+            $_SESSION['cart'][$_GET['id']]=1;
+        }else{
+            $_SESSION['cart'][$_GET['id']]+=1;
+        }
+        echo "Produit ajouté au panier !";
+        break;
+    case "cartconsult":
+        foreach ($_SESSION['cart'] as $key => $value) {            
+            $products[$key] = $product->get_product_by_id($key);
+        }
+        var_dump($products[13]);
+
+        $template = $twig->load('cart.twig');
+        echo $template->render(array(
+            'titre' => "Panier",
+            'cart' => $products
+        ));
+        break;
+    /*case "suppr":
        if (suppr_action($cont, $_GET['id']))
             $message = "Contact supprimé avec succès !";
        else $message = "Pb de suppression !";

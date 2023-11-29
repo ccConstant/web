@@ -1,9 +1,9 @@
 <?php
+
 require_once 'modele/modele2.php';
 
-function list_action($twig, $categorie){
+function list_action($twig, $categorie, $product){
   $template = $twig->load('products.twig');
-  $product=new Products();
   $products=$product->get_products_by_cat($categorie);
   echo $template->render(array(
       'titre' => "Welcome ! ",
@@ -11,17 +11,18 @@ function list_action($twig, $categorie){
   ));
 }
 
-/*function detail_action($cont,$twig, $id,$message=''){
-  $ami = $cont->get_friend_by_id($id);
-  $template = $twig->load('detail.twig.html');
+function detail_action($product,$twig, $id){
+  $template = $twig->load('detail.twig');
+  $p=$product->get_product_by_id($id);
   $titre="Détails";
   echo $template->render(array(
             'titre' => $titre,
-            'ami' => $ami,
-            'message' => $message
+            'product' => $p,
+            'lien' => "productimages/".$p[0]->image,
             ));
 }
 
+/*
 function suppr_action($cont, $id){
   return ($cont->delete_friend_by_id($id));
 }

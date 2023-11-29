@@ -5,11 +5,25 @@
         <meta charset='UTF-8'>
     </head>
     <body>
-        <tbody>
-            {% for item in biblio|sort %}
-            <tr>
-                <td>{{ item.titre}}</td>
-                <td>{{ item.nom|capitalize }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
+        <h1>{{ titre_page }} - {{ date }}</h1>
+        {% if cart is not empty %}
+            <table>
+                <thead>
+                    <tr><th>Name</th>
+                    <th>Description</th></tr>
+                </thead>
+                <tbody>
+                    {# afficher les titres et noms des livres #}
+                    {% for item in cart|sort %}
+                    <tr>
+                    <td><a href="controleur.php?action=detail&id={{item.id}}">{{ item.name }}</a></td>
+                    <td>{{ item.description|capitalize }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            Aucun livre dans la bibliothèque.
+        {% endif %}
+    </body>
+</html>

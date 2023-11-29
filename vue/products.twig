@@ -16,8 +16,9 @@
                     {# afficher les titres et noms des livres #}
                     {% for item in products|sort %}
                     <tr>
-                    <td>{{ item.name }}</td>
+                    <td><a href="controleur.php?action=detail&id={{item.id}}">{{ item.name }}</a></td>
                     <td>{{ item.description|capitalize }}</td>
+                    <td> <a href="controleur.php?action=addToCart&id={{item.id}}"><img src="productimages/btnAddToCart.png" alt="image" /></a></td>
                     </tr>
                     {% endfor %}
                 </tbody>

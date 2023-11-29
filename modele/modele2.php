@@ -39,6 +39,15 @@ class Products {
 	  return $data->fetchAll(PDO::FETCH_OBJ);
 	}
 
+	/** Récupére un produit par id sous forme d'un tableau */
+	function get_product_by_id($id)
+	{
+	  $sql="SELECT * from products where id=$id";
+	  $data=self::$connexion->prepare($sql);
+	  $data->execute();
+	  return $data->fetchAll(PDO::FETCH_OBJ);
+	}
+
 	/** Ajoute un produit à la table contacts */
 	function add_product($data)
 	{
