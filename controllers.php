@@ -1,6 +1,6 @@
 <?php
 
-require_once 'modele/modele2.php';
+require_once 'modele/products.php';
 
 function list_action($twig, $categorie, $product){
   $template = $twig->load('products.twig');
@@ -20,6 +20,14 @@ function detail_action($product,$twig, $id){
             'product' => $p,
             'lien' => "productimages/".$p[0]->image,
             ));
+}
+
+function createAccount($twig){
+
+    //vérifier si les deux mots de passe sont identiques?
+    //vérifier si le login n'existe pas déjà?
+    //vérifier si le mail n'existe pas déjà?
+    //si tout est ok, créer le compte et rediriger vers la page d'accueil en disant que c'est ok
 }
 
 /*

@@ -1,7 +1,9 @@
 <?php
 
 session_start();
-require_once 'modele/modele2.php';
+require("modele/connect.php");
+require_once 'modele/products.php';
+require_once 'modele/users.php';
 include 'vendor/autoload.php';
 // le dossier ou on trouve les templates
 $loader = new Twig\Loader\FilesystemLoader('vue');
@@ -15,6 +17,7 @@ $action = $_GET['action'] ?? 'welcome';
 $categorie = $_GET['categorie'] ?? 0 ;
 $message = "";
 $product=new Products();
+$user=new Users();
 switch ($action) {
     case "welcome":
         $template = $twig->load('welcome.twig');
@@ -55,6 +58,26 @@ switch ($action) {
         echo $template->render(array(
         ));
         break;
+    case "createAccount":
+        
+    case "buy": 
+        //gérer le cas si le user est co ou pas 
+        //if ($_SESSION['user'] !=null){
+        
+        //}
+        $template = $twig->load('buy.twig');
+        echo $template->render(array(
+        ));
+        break;
+    case "login":
+        $template = $twig->load('login.twig');
+        echo $template->render(array(
+        ));
+        break;
+    case "connectUser":
+        //connecter le user 
+        //rediriger vers la page d'accueil
+        break ; 
     /*case "suppr":
        if (suppr_action($cont, $_GET['id']))
             $message = "Contact supprimé avec succès !";

@@ -9,7 +9,7 @@
         <h1> Inscription </h1>
         
         <div style="margin-left:50px;margin-right:50px;">
-        <form>
+        <form method="post">
             <div class="row">
               <div class="col-md-6">
                 <label for="firstname" class="form-label">First Name</label>
@@ -73,7 +73,11 @@
               </div>
             </div>
           <div class="row">
-          <button class="btn btn-primary">S'inscrire</button>
+          <a href="controleur.php?action=createAccount"><button class="btn btn-primary">S'inscrire</button></a>
+          <a href="controleur.php?action=login"> Déjà inscrit? </a>
+          </div>
+
+
         </form>
         </div>
     </body>
