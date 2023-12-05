@@ -43,15 +43,8 @@ switch ($action) {
         echo "Produit ajouté au panier !";
         break;
     case "cartconsult":
-        foreach ($_SESSION['cart'] as $key => $value) {            
-            $products[$key] = $product->get_product_by_id($key);
-        }
-
-        $template = $twig->load('cart.twig');
-        echo $template->render(array(
-            'titre' => "Panier",
-            'cart' => $products
-        ));
+        echo ("coucou") ; 
+        cartConsult($twig, $product);
         break;
     case "subscribe" : 
         $template = $twig->load('subscribe.twig');

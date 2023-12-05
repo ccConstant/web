@@ -22,6 +22,20 @@ function detail_action($product,$twig, $id){
             ));
 }
 
+function cartConsult($twig, $product){
+  foreach ($_SESSION['cart'] as $key => $value) {  
+    $products[$key]=$product->get_product_by_id($key) ; 
+    $quantite[$key] = $value;
+  }
+  $template = $twig->load('cart.twig');
+  echo $template->render(array(
+      'titre' => "Panier",
+      'cart' => $products,
+      'quantite' => $quantite
+
+  ));
+}
+
 function createAccount($twig){
 
     //vérifier si les deux mots de passe sont identiques?
