@@ -23,7 +23,6 @@ switch ($action) {
         ));
         break;
     case "list": 
-        echo "coucou";
         list_action($twig, $categorie, $product);
         break;
     case "detail":
@@ -44,12 +43,16 @@ switch ($action) {
         foreach ($_SESSION['cart'] as $key => $value) {            
             $products[$key] = $product->get_product_by_id($key);
         }
-        var_dump($products[13]);
 
         $template = $twig->load('cart.twig');
         echo $template->render(array(
             'titre' => "Panier",
             'cart' => $products
+        ));
+        break;
+    case "subscribe" : 
+        $template = $twig->load('subscribe.twig');
+        echo $template->render(array(
         ));
         break;
     /*case "suppr":

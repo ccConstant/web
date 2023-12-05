@@ -16,8 +16,9 @@
                     {# afficher les titres et noms des livres #}
                     {% for item in cart|sort %}
                     <tr>
-                    <td><a href="controleur.php?action=detail&id={{item.id}}">{{ item.name }}</a></td>
-                    <td>{{ item.description|capitalize }}</td>
+                    <td>
+                    <a href="controleur.php?action=detail&id={{item[0].id}}">{{ item[0].name }}</a></td>
+                    <td>{{ item[0].description|capitalize }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>
