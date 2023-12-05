@@ -1,18 +1,199 @@
-<!doctype html>
-<html>
-    <head>
-        <title>{{ titre }}</title>
-        <meta charset='UTF-8'>
-    </head>
-    <body>
-        <tbody>
-        <h1>{{ titre }}</h1>
-        
-        <ul>
-            <li><a href="controleur.php?action=list&categorie=1">Boissons </a></li>
-             <li><a href="controleur.php?action=list&categorie=2">Biscuits </a></li>
-              <li><a href="controleur.php?action=list&categorie=3">Fruits secs </a></li>
-              <li><a href="controleur.php?action=cartconsult">Mon panier </a></li>
-        </ul>
+<!DOCTYPE html>
+<html >
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>{{ titre }}</title>
+</head>
+<body>
 
-        </tbody>
+<header>
+        <div class="container">
+        <h1>CC & KAM Snacks</h1>
+</header>
+        <section class="introduction">
+             <div class="content">
+            
+            
+                  <h2 class="text">Que vous soyez un amateur de saveurs audacieuses, un explorateur de nouvelles textures, ou simplement quelqu'un en quête du parfait mélange sucré-salé, notre sélection diversifiée a quelque chose à offrir à chaque palais. Chaque produit que nous proposons est choisi avec amour, créativité et une passion inébranlable pour l'excellence.</h2> 
+                  <p class="text">Découvrez notre sélection de produits de qualité et faites-vous plaisir avec nos délicieuses boissons, biscuits et fruits secs.</p><br><br><br>
+       
+             </div>
+        </section>
+         
+    
+
+    <hr class="trait-horizontal-rose">
+
+       <div>
+       <p>Explorez nos délices exquis avec les biscuits CC & KAM. Chaque bouchée est une fusion parfaite de saveurs, de texture croustillante et de moelleux indulgent. De la simplicité du beurre aux éclats de chocolat noir, plongez dans une expérience gourmande artisanale. Choisissez l'authenticité, choisissez la gourmandise. Découvrez nos biscuits dès maintenant.</p>
+       </div>
+        <section class="parallax">
+        
+                 <div class="background-image-3"></div>
+                    <div class="content">
+                        <h2><a href="controleur.php?action=list&categorie=1">Biscuits </a></h2>
+         
+                    </div>
+         </section>
+        <div>
+         <p>Rafraîchissez votre journée avec nos boissons artisanales. Des infusions fruitées aux mélanges exotiques, chaque gorgée est une escapade gustative. Découvrez une symphonie de saveurs uniques et laissez-vous emporter par une expérience désaltérante.</p>
+        </div>
+
+        <section class="parallax">
+        
+                <div class="background-image-2"></div>
+                <div class="content">
+                <h2><a href="controleur.php?action=list&categorie=2">Boissons </a></h2>
+                </div>
+        </section>
+
+         <div>
+         <p>Les fruits secs ne sont pas seulement des en-cas, ce sont des joyaux de la nature. De nos amandes grillées à nos mangues séchées, chaque morceau est une délicatesse. Plongez dans notre collection et savourez la perfection naturelle.</p>
+         </div>
+
+        <section class="parallax">
+        
+             <div class="background-image-4"></div>
+                <div class="content">
+                     <h2> <a href="controleur.php?action=list&categorie=3">Fruits secs </a></h2>
+            
+                </div>
+        </section>
+     
+    
+    
+    
+   
+   
+
+    
+    
+    
+   
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+
+.introduction {
+    background-image: url('productimages/cute.jpg');
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
+    background-color: #fff; 
+    color: #333; 
+}
+
+.text{
+    background-color: white;
+
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.parallax {
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
+}
+
+.background-image,
+.background-image-2,
+.background-image-3,
+.background-image-4 {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+
+
+.background-image-2 {
+    background-image: url('productimages/jusdefruits.jpg'); 
+}
+
+.background-image-3 {
+    background-image: url('productimages/fondecran.jpg'); 
+}
+
+.background-image-4 {
+    background-image: url('productimages/fruitsec.jpg'); 
+
+.content {
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    font-size: 25px;
+    color: white; 
+
+
+
+h1 { color: #F90B6D; font-family: "Great Vibes", cursive ; font-size: 40px; font-weight: 400; line-height: 40px; margin: 0 0 16px; }
+
+
+h2 { color: #d54d7b; font-family: "Great Vibes", cursive; font-size: 35px; line-height: 40px; font-weight: normal; margin-bottom: 0px; margin-top: 40px; text-align: justify; text-shadow: 0 1px 1px #fff; }
+p { color: #333333; font-size: 29px; font-family: "Libre Baskerville", serif; line-height: 45px; text-align: center; text-shadow: 0 1px 1px #fff; padding-top: 20px; }
+a {  color: white; text-decoration: none; }
+
+
+
+
+a:hover {  color: purple; text-decoration: none; }
+
+.container {
+    width: 80%;
+    margin: 0 auto;
+}
+
+header {
+    background-color:pink;
+    
+    padding: 30px 0;
+}
+
+
+.trait-horizontal-rose {
+    border: round; 
+    height: 5px; 
+    background-color: purple; 
+    margin: 20px 0; 
+    margin-left:50px;
+    margin-right:50px;
+    border-radius:5px;
+}
+
+
+</style>
