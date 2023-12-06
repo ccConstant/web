@@ -8,11 +8,16 @@ include 'vendor/autoload.php';
 // le dossier ou on trouve les templates
 $loader = new Twig\Loader\FilesystemLoader('vue');
 // initialiser l'environement Twig
-$twig = new Twig\Environment($loader);
+$twig = new \Twig\Environment($loader, [
+    'debug' => true,
+]);
+$twig->addExtension(new \Twig\Extension\DebugExtension());
+
 
 include 'controllers.php';
 // on lit une action en parametre
 // par defaut, 'list'
+var_dump($_POST);
 $action = $_GET['action'] ?? 'welcome';
 $categorie = $_GET['categorie'] ?? 0 ;
 $message = "";
@@ -52,6 +57,8 @@ switch ($action) {
         ));
         break;
     case "createAccount":
+        createAccount($twig, $_POST);
+        break;
         
     case "buy": 
         //gérer le cas si le user est co ou pas 

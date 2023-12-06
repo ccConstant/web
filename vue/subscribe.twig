@@ -9,76 +9,79 @@
         <h1> Inscription </h1>
         
         <div style="margin-left:50px;margin-right:50px;">
-        <form method="post">
+        <form method="POST" action="controleur.php?action=createAccount" >
             <div class="row">
               <div class="col-md-6">
                 <label for="firstname" class="form-label">First Name</label>
-                <input id="firstname" class="form-control" type="text" name="" placeholder="Enter your firstname">
+                <input id="firstname" class="form-control" type="text" name="firstname" placeholder="Enter your firstname">
               </div>
               <div class="col-md-6">
                 <label for="lastname" class="form-label">Last Name</label>
-                <input id="lastname" class="form-control" type="text" name="" placeholder="Enter your lastname">
+                <input id="lastname" class="form-control" type="text" name="lastname" placeholder="Enter your lastname">
               </div>
             </div>
             <div class="row">
               <div class="col-md-6">
                 <label for="mail" class="form-label">Mail</label>
-                <input id="mail" class="form-control" type="text" name="" placeholder="example@example.com">
+                <input id="mail" class="form-control" type="text" name="mail" placeholder="example@example.com">
               </div>
               <div class="col-md-6">
                 <label for="address" class="form-label">Address</label>
-                <input id="address" class="form-control" type="text" name="" placeholder="Enter your address">
+                <input id="address" class="form-control" type="text" name="address" placeholder="Enter your address">
               </div>
             </div>
 
             <div class="row">
               <div class="col-md-6">
                 <label for="adress_complement" class="form-label">Adress complement</label>
-                <input id="adress_complement" class="form-control" type="text" name="" placeholder="Enter your adress complement">
+                <input id="adress_complement" class="form-control" type="text" name="address2" placeholder="Enter your adress complement">
               </div>
               <div class="col-md-6">
                 <label for="postcode" class="form-label">Postcode</label>
-                <input id="postcode" class="form-control" type="text" name="" placeholder="69000">
+                <input id="postcode" class="form-control" type="text" name="postcode" placeholder="69000">
               </div>
             </div>
 
             <div class="row">
               <div class="col-md-6">
                 <label for="city" class="form-label">City</label>
-                <input id="city" class="form-control" type="text" name="" placeholder="Lyon">
+                <input id="city" class="form-control" type="text" name="city" placeholder="Lyon">
               </div>
               <div class="col-md-6">
                 <label for="phone" class="form-label">Phone Number</label>
-                <input id="phone" class="form-control" type="text" name="" placeholder="0612345678">
+                <input id="phone" class="form-control" type="text" name="phoneNumber" placeholder="0612345678">
               </div>
             </div>
 
             <div class="row">
               <div class="col-md-6">
                 <label for="inputPassword5" class="form-label">Password</label>
-                <input type="password" id="inputPassword5" class="form-control" aria-describedby="passwordHelpBlock">
-                <div id="passwordHelpBlock" class="form-text">
+                <input type="password" id="inputPassword5" class="form-control" name="password" ria-describedby="passwordHelpBlock">
+                <!--<div id="passwordHelpBlock" class="form-text">
                 Your password must be 8-20 characters long, contain letters and numbers, and must not contain spaces, special characters, or emoji.
-                </div>
+                </div>-->
             </div>
               <div class="col-md-6">
                 <label for="inputPassword5" class="form-label">Password confirmation</label>
-                <input type="passwordconfirm" id="inputPassword5" class="form-control" aria-describedby="passwordHelpBlock">
+                <input type="password" id="inputPassword6" name="passwordconfirm" class="form-control" aria-describedby="passwordHelpBlock">
               </div>
             </div>
-
-
-            <div class="row">
-             
-              </div>
-            </div>
-          <div class="row">
-          <a href="controleur.php?action=createAccount"><button class="btn btn-primary">S'inscrire</button></a>
-          <a href="controleur.php?action=login"> Déjà inscrit? </a>
-          </div>
-
-
+            {% for error in errors %}
+            <p class="errors">{{ error }}</p>
+            {% endfor %}
+             <button type="submit" class="btn btn-primary">S'inscrire</button>
         </form>
+          <a href="controleur.php?action=login"> Déjà inscrit? </a>
         </div>
     </body>
 </html>
+
+
+<style>
+    .errors{
+        color:red;
+    }
+
+    input{
+        margin-bottom:15px;
+    }
