@@ -81,32 +81,8 @@
         </nav>
     </header>
     <body>
-        <h1>{{ titre_page }} - {{ date }}</h1>
-        {% if cart is not empty %}
-            <table>
-                <thead>
-                    <tr><th>Name</th>
-                    <th>Description</th></tr>
-                </thead>
-                <tbody>
-                    {# afficher les titres et noms des livres #}
-                    {% for item in cart|sort %}
-                    <tr>
-                    <td>
-                    <a href="controleur.php?action=detail&id={{item[0].id}}">{{ item[0].name }}</a></td>
-                    <td>{{ item[0].description|capitalize }}</td>
-                    <td>{{ item[0].price }} €</td>
-                    <td> quantite : {{quantite[item[0].id]}} </td>
-                    <td>  <a href="controleur.php?action=deleteFromCart&id={{item[0].id}}"> supprimer du panier</a></td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        {% else %}
-            Aucun produit dans le panier. 
-        {% endif %}
-        <a href="controleur.php?action=buy"><button class="btn btn-primary" >Acheter </button></a>
-    </body>
+     Coucou connected ! 
+        
 </html>
 
 <style>

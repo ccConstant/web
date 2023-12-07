@@ -27,9 +27,13 @@ function detail_action($product,$twig, $id){
 }
 
 function cartConsult($twig, $product){
-  foreach ($_SESSION['cart'] as $key => $value) {  
-    $products[$key]=$product->get_product_by_id($key) ; 
-    $quantite[$key] = $value;
+  $quantite=array();
+  $products=array();
+  if (isset($_SESSION['cart'])){
+    foreach ($_SESSION['cart'] as $key => $value) {  
+      $products[$key]=$product->get_product_by_id($key) ; 
+      $quantite[$key] = $value;
+    }
   }
   $template = $twig->load('cart.twig');
   echo $template->render(array(

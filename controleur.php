@@ -17,17 +17,21 @@ $twig->addExtension(new \Twig\Extension\DebugExtension());
 include 'controllers.php';
 // on lit une action en parametre
 // par defaut, 'list'
-var_dump($_POST);
 $action = $_GET['action'] ?? 'welcome';
 $categorie = $_GET['categorie'] ?? 0 ;
 $message = "";
 $product=new Products();
 $user=new Users();
+$connected=false ; 
+if (isset($_SESSION['user']) && $_SESSION['user']!=null){
+    $connected=true;
+}
 switch ($action) {
     case "welcome":
         $template = $twig->load('welcome.twig');
         echo $template->render(array(
             'titre' => "Welcome ! ",
+            'connected' => $connected,
         ));
         break;
     case "list": 
@@ -47,8 +51,7 @@ switch ($action) {
         }
         echo "Produit ajouté au panier !";
         break;
-    case "cartconsult":
-        echo ("coucou") ; 
+    case "cartconsult": 
         cartConsult($twig, $product);
         break;
     case "subscribe" : 
@@ -61,13 +64,15 @@ switch ($action) {
         break;
         
     case "buy": 
-        //gérer le cas si le user est co ou pas 
-        //if ($_SESSION['user'] !=null){
-        
-        //}
-        $template = $twig->load('buy.twig');
-        echo $template->render(array(
-        ));
+        if ($connected){
+            $template = $twig->load('buyConnected.twig');
+            echo $template->render(array(
+            ));
+        }else{
+            $template = $twig->load('buyNotConnected.twig');
+            echo $template->render(array(
+            ));
+        }
         break;
     case "login":
         $template = $twig->load('login.twig');
