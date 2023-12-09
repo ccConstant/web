@@ -81,7 +81,7 @@
         </nav>
     </header>
     <body>
-        <h1> Inscription </h1>
+        <h2> Inscription </h2><br>
         
         <div style="margin-left:50px;margin-right:50px;">
         <form method="POST" action="controleur.php?action=createAccount" >
@@ -144,9 +144,16 @@
             {% for error in errors %}
             <p class="errors">{{ error }}</p>
             {% endfor %}
-             <button type="submit" class="btn btn-primary">S'inscrire</button>
+            
         </form>
-          <a href="controleur.php?action=login"> Déjà inscrit? </a>
+        <div class="sinscrire">
+            <div class="boutton">
+             <button type="submit" class="btn btn-primary">S'inscrire</button>
+             </div>
+             <a href="controleur.php?action=login" style="font-size:12px" class="link"> Déjà inscrit? </a>
+        </div>
+          
+          
         </div>
     </body>
 </html>
@@ -186,4 +193,26 @@ h1 { color: #F90B6D; font-family: " Great Vibes, cursive" ; font-size: 50px; fon
 
 /* end*/
 
+h2 {  color: #d54d7b; font-family: "Great Vibes", cursive; font-size: 50px; line-height: 40px; font-weight: normal; margin-top: 30px; text-align: center; text-shadow: 0 1px 1px #fff; }
+
+.sinscrire{
+  position: relative;
+  margin-left:90%;
+  margin-top:10px;
+  bottom:10px;
+  margin-bottom:20px;
+  
+}
+
+.button {
+        position: relative;
+        z-index: 1; /* Assure que le bouton est au-dessus */
+    }
+
+.link {
+        position: relative;
+        z-index: 0;
+        margin-left:10px;
+        
+}
 </style>
