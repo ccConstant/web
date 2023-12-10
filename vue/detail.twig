@@ -6,7 +6,7 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
         <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-</head>
+    </head>
     <header>
         <nav class="navbar navbar-expand-lg bg-body-tertiary" style="background-color: #e3f2fd;">
             <div class="container-fluid">
@@ -81,21 +81,15 @@
         </nav>
     </header>
     <body>
-        <h1>{{ titre_page }} - {{ date }}</h1>
-            <table>
-                <thead>
-                    <tr><th> Image</th></tr>
-                    <tr><th>Name</th>
-                    <th>Description</th></tr>
-                </thead>
-                <tbody>
-                    <tr> 
-                    <td> <img src={{lien}}></td>
-                    <td>{{ product[0].name|capitalize }}</td>
-                    <td>{{ product[0].description|capitalize }}</td>
-                    </tr>
-                </tbody>
-            </table>
+    <div class="product-details">
+        <div class="product-image">
+            <img src="{{lien}}" alt="{{ product[0].name }}">
+        </div>
+        <div class="product-info">
+            <h1>{{ product[0].name|capitalize }}</h1>
+            <p class="description">{{ product[0].description|capitalize }}</p>
+        </div>    
+    </div>
     </body>
 </html>
 
@@ -126,5 +120,59 @@ h1 { color: #F90B6D; font-family: " Great Vibes, cursive" ; font-size: 50px; fon
 }
 
 /* end*/
+
+
+
+
+
+
+body {
+    font-family: 'Arial', sans-serif;
+   
+    background-color: #f2f2f2;
+}
+
+.product-details {
+    max-width: 900px;
+    margin: 50px auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 30px;
+}
+
+.product-image img {
+    max-width: 100%;
+    height: auto;
+}
+
+.product-info {
+    color: #333;
+    
+}
+
+h1 { color: #F90B6D; font-family: " Great Vibes, cursive" ; font-size: 50px; font-weight: 400; line-height: 40px; text-align: center; margin-left : 30px; margin-right : 70px; }
+p { color: #333333; font-size: 29px; font-family: "Libre Baskerville", serif; line-height: 45px; text-shadow: 0 1px 1px #fff; padding-top: 20px; }
+
+
+.description {
+    color: #555;
+    line-height: 1.6;
+}
+
+.add-to-cart {
+        position: absolute;
+        bottom: 10px; 
+        right: 10px; 
+    }   
+
+
+
+
+
+    
 
 </style>
