@@ -49,7 +49,11 @@ switch ($action) {
         }else{
             $_SESSION['cart'][$_GET['id']]+=1;
         }
-        echo "Produit ajouté au panier !";
+        $template = $twig->load('example.twig');
+        echo $template->render(array(
+            'message' => "Produit ajouté au panier ! ",
+            'connected' => $connected,
+        ));
         break;
     case "cartconsult": 
         cartConsult($twig, $product);
