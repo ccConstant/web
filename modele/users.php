@@ -38,12 +38,22 @@ class Users {
 	  return $data->fetchAll(PDO::FETCH_OBJ);
 	}
 
+	/** Récupére un user par email sous forme d'un tableau */
+	function get_user_by_email($email)
+	{
+	  $sql="SELECT * from customers where email='$email'";
+	  $data=self::$connexion->prepare($sql);
+	  $data->execute();
+	  return $data->fetchAll(PDO::FETCH_OBJ);
+	}
+
 	/** Ajoute un user à la table customers */
 	function add_user($data)
 	{
-	  $sql = "INSERT INTO users(id,forname, surname, add1, add2, add3, postcode, phone, email)
+	  $sql = "INSERT INTO customers(forname, surname, add1, add2, add3, postcode, phone, email, registered)
 	  values (?,?,?,?,?,?,?,?,?)";
 	  $stmt = self::$connexion->prepare($sql);
-	  return $stmt->execute(array($data['id'], $data['forname'], $data['surname'], $data['add1'], $data['add2'], $data['add3'], $data['postcode'], $data['phone'], $data['email']));
+	  $stmt->execute(array($data['firstname'], $data['lastname'], $data['addr'], $data['addr2'], $data['addr3'], $data['postcode'], $data['phoneNumber'], $data['mail'], 1));
+	  return self::$connexion->lastInsertId();
 	}
 }

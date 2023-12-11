@@ -50,7 +50,7 @@
                             <p class="separate"></p>
                             <!-- deconnexion (TO DO) -->
                             <li class="nav-item">
-                                <a href=""><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
+                                <a href="controleur.php?action=disconnect"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
                                 <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0z"/>
                                 <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"/>
                                 </svg></a>
@@ -94,20 +94,22 @@
                     {% for item in cart|sort %}
                         <div class="introduction">
                                 <div class="card" style="width: 18rem;">
-                                    <img src={{lien[item.id]}}  alt="Image">
+                                    <img src={{lien[item[0].id]}}  alt="Image">
                                     <div class="card-body">
                                         <a href="controleur.php?action=detail&id={{item[0].id}}">{{ item[0].name }}</a><br><br>
                                         <div class="enBasCard">
                                         <div class="d-flex align-items gap-5">
-                                        <p> Quantité :  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash-circle-fill" viewBox="0 0 16 16">
+                                        <p> Quantité :  <!-- symbole - -->
+                                                        <a href="controleur.php?action=removeQuantity&id={{item[0].id}}"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash-circle-fill" viewBox="0 0 16 16">
                                                             <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M4.5 7.5a.5.5 0 0 0 0 1h7a.5.5 0 0 0 0-1z"/>
-                                                        </svg>
+                                                        </svg></a>
                                                         {{quantite[item[0].id]}} 
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+                                                        <!-- symbole + -->
+                                                        <a href="controleur.php?action=addQuantity&id={{item[0].id}}"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
                                                             <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"/>
-                                                        </svg>  
+                                                        </svg></a>  
                                         </p>
-                                        <p>{{ item[0].price }} €</p>
+                                        <p>{{ sousTotal[item[0].id] }} €</p>
                                         </div>
                                         </div>
                                         <a href="controleur.php?action=deleteFromCart&id={{item[0].id}}"><img src="productimages/trash.png" class="trash"></a></td>
@@ -123,7 +125,7 @@
             Votre panier est tristement vide 
             {% endif %}
         <div class="acheter">
-        <p> Total:</p>
+        <p> Total : {{total}} €</p>
         <a href="controleur.php?action=buy"><button class="btn btn-primary" >Acheter </button></a>
         </div>
     </body>

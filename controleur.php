@@ -22,8 +22,8 @@ $categorie = $_GET['categorie'] ?? 0 ;
 $message = "";
 $product=new Products();
 $user=new Users();
-$connected=false ; 
-if (isset($_SESSION['user']) && $_SESSION['user']!=null){
+$connected=false ;
+if (isset($_SESSION['user']) && $_SESSION['user']!=null){   
     $connected=true;
 }
 switch ($action) {
@@ -35,10 +35,10 @@ switch ($action) {
         ));
         break;
     case "list": 
-        list_action($twig, $categorie, $product);
+        list_action($twig, $categorie, $product, $connected);
         break;
     case "detail":
-        detail_action($product,$twig, $_GET['id']);
+        detail_action($product,$twig, $_GET['id'], $connected);
         break;
     case "addToCart":
         if(!isset($_SESSION['cart'])){
@@ -56,7 +56,7 @@ switch ($action) {
         ));
         break;
     case "cartconsult": 
-        cartConsult($twig, $product);
+        cartConsult($twig, $product, $connected);
         break;
     case "subscribe" : 
         $template = $twig->load('subscribe.twig');
@@ -64,7 +64,7 @@ switch ($action) {
         ));
         break;
     case "createAccount":
-        createAccount($twig, $_POST);
+        $connected=createAccount($twig, $_POST, $user);
         break;
         
     case "buy": 
@@ -83,10 +83,32 @@ switch ($action) {
         echo $template->render(array(
         ));
         break;
+    case "deleteFromCart" : 
+        $_SESSION['cart'][$_GET['id']]=0;
+        cartConsult($twig, $product, $connected);
+        break;
     case "connectUser":
+        connectUser($twig, $_POST, $user, $connected);
         //connecter le user 
         //rediriger vers la page d'accueil
         break ; 
+    case "disconnect":
+        $_SESSION['user']=null;
+        $template = $twig->load('welcome.twig');
+        echo $template->render(array(
+            'titre' => "Welcome ! ",
+            'connected' => false,
+        ));
+
+        break;
+    case "addQuantity":
+        $_SESSION['cart'][$_GET['id']]+=1;
+        cartConsult($twig, $product, $connected);
+        break;
+    case "removeQuantity":
+        $_SESSION['cart'][$_GET['id']]-=1;
+        cartConsult($twig, $product, $connected);
+        break;
     /*case "suppr":
        if (suppr_action($cont, $_GET['id']))
             $message = "Contact supprimé avec succès !";

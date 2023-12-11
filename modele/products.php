@@ -55,6 +55,7 @@ class Products {
 	  $stmt = self::$connexion->prepare($sql);
 	  return $stmt->execute(array($data['id'],
 		$data['cat_id'], $data['name'],$data['description'],$data['image'], $data['price'], $data['quantity']));
+		
 	}
 
 	/** Récupére un contact à partir de son ID */
