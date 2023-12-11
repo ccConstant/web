@@ -100,7 +100,11 @@
                                         <a href="controleur.php?action=detail&id={{item.id}}"><h5 class="card-title">{{ item.name }}</h5></a>
                                         <div class="description">
                                         <p class="card-text">{{ item.description|capitalize }}</p>
+                                        <div class="prix">
+                                        <p >{{ item.price }} €</p> 
+                                        </div>
                                         </div> <br>
+                                        
                                         <a href="controleur.php?action=addToCart&id={{item.id}}" class="add-to-cart"><img src="productimages/btnAddToCart.png" alt="image" /></a>
                                     </div>
                                 </div>
@@ -133,7 +137,7 @@
 
 
 h2 { color: #d54d7b; font-family: "Great Vibes", cursive; font-size: 35px; line-height: 40px; font-weight: normal; margin-bottom: 0px; margin-top: 40px; text-align: justify; text-shadow: 0 1px 1px #fff; }
-p { color: #333333; font-size: 29px; font-family: "Libre Baskerville", serif; line-height: 45px; text-align: center; text-shadow: 0 1px 1px #fff; padding-top: 20px; }
+p { color: #333333; font-size: 25px; font-family: "Libre Baskerville", serif; line-height: 45px; text-align: center; text-shadow: 0 1px 1px #fff; padding-top: 20px; }
 
 
 /* for nav bar*/
@@ -171,7 +175,7 @@ h1 { color: #F90B6D; font-family: " Great Vibes, cursive" ; font-size: 50px; fon
 .card-text {
         line-height: 1.5;
         text-align: left;
-        margin-bottom:
+      
     }
 
 .card-title{
@@ -197,5 +201,10 @@ h1 { color: #F90B6D; font-family: " Great Vibes, cursive" ; font-size: 50px; fon
         right: 10px; 
     }   
 
+.prix{
+        position: absolute;
+        bottom:10px;
+        left:10px;
+}
 
 </style>

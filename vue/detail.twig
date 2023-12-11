@@ -87,9 +87,11 @@
         </div>
         <div class="product-info">
             <h1>{{ product[0].name|capitalize }}</h1>
-            <p class="description">{{ product[0].description|capitalize }}</p>
-        </div>    
-    </div>
+            <p class="description">{{ product[0].description|capitalize }} </p>    
+            <p>{{ product[0].price }} €</p>                  
+            <a href="controleur.php?action=addToCart&id={{product.id}}" class="add-to-cart"><img src="productimages/btnAddToCart.png" alt="image" /></a> 
+            
+        </div>
     </body>
 </html>
 
@@ -164,9 +166,8 @@ p { color: #333333; font-size: 29px; font-family: "Libre Baskerville", serif; li
 }
 
 .add-to-cart {
-        position: absolute;
-        bottom: 10px; 
-        right: 10px; 
+        margin-left:90%;
+        position:relative;
     }   
 
 
