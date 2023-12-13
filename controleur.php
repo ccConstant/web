@@ -4,6 +4,7 @@ session_start();
 require("modele/connect.php");
 require_once 'modele/products.php';
 require_once 'modele/users.php';
+require_once 'modele/logins.php';
 include 'vendor/autoload.php';
 // le dossier ou on trouve les templates
 $loader = new Twig\Loader\FilesystemLoader('vue');
@@ -21,11 +22,13 @@ $action = $_GET['action'] ?? 'welcome';
 $categorie = $_GET['categorie'] ?? 0 ;
 $message = "";
 $product=new Products();
+$login=new Logins();
 $user=new Users();
 $connected=false ;
 if (isset($_SESSION['user']) && $_SESSION['user']!=null){   
     $connected=true;
 }
+var_dump($connected);
 switch ($action) {
     case "welcome":
         $template = $twig->load('welcome.twig');
@@ -64,7 +67,7 @@ switch ($action) {
         ));
         break;
     case "createAccount":
-        $connected=createAccount($twig, $_POST, $user);
+        $connected=createAccount($twig, $_POST, $user, $login);
         break;
         
     case "buy": 
@@ -88,7 +91,7 @@ switch ($action) {
         cartConsult($twig, $product, $connected);
         break;
     case "connectUser":
-        connectUser($twig, $_POST, $user, $connected);
+        connectUser($twig, $_POST, $login, $connected, $user);
         //connecter le user 
         //rediriger vers la page d'accueil
         break ; 
@@ -103,11 +106,12 @@ switch ($action) {
         break;
     case "addQuantity":
         $_SESSION['cart'][$_GET['id']]+=1;
-        cartConsult($twig, $product, $connected);
+        header("Location: controleur.php?action=cartconsult");
+        //cartConsult($twig, $product, $connected);
         break;
     case "removeQuantity":
         $_SESSION['cart'][$_GET['id']]-=1;
-        cartConsult($twig, $product, $connected);
+        header("Location: controleur.php?action=cartconsult");
         break;
     /*case "suppr":
        if (suppr_action($cont, $_GET['id']))

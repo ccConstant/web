@@ -15,6 +15,7 @@ require_once 'modele/products.php';
 function list_action($twig, $categorie, $product, $connected){
   $template = $twig->load('products.twig');
   $products=$product->get_products_by_cat($categorie);
+  $lien=array();
   foreach ($products as $key => $value) {
     $lien[$value->id]="./productimages/".$products[$key]->image;
   }
@@ -41,6 +42,8 @@ function cartConsult($twig, $product, $connected){
   $quantite=array();
   $products=array();
   $total=0; 
+  $sousTotal=array();
+  $lien=array();
   if (isset($_SESSION['cart'])){
     foreach ($_SESSION['cart'] as $key => $value) {
       if ($value != 0) {
@@ -66,8 +69,13 @@ function cartConsult($twig, $product, $connected){
   ));
 }
 
-function createAccount($twig, $post, $user){
+function createAccount($twig, $post, $user, $login){
   $erreurs=verif_entree($post);
+  $res=$user->get_user_by_email($post['mail']);
+  if (count($res)!=0){
+    $erreurs[] = 'Cette adresse mail est déjà utilisée.';
+  }
+
   if (count($erreurs) != 0){
     $template = $twig->load('subscribe.twig');
     echo $template->render(array(
@@ -76,8 +84,10 @@ function createAccount($twig, $post, $user){
         'data' => $post
     ));
   }else{
-
+    $password=password_hash($post['password'], PASSWORD_DEFAULT);
+    $post['password']=$password;
     $_SESSION['user']=$user->add_user($post);
+    $login->add_login(array('customer_id' => $_SESSION['user'], 'username' => $post['mail'], 'password' => $password));
     $user=$user->get_user_by_id($_SESSION['user']);
     $template = $twig->load('example.twig');
     $title="Bienvenu(e) ".$user[0]->forname. "!";
@@ -91,7 +101,7 @@ function createAccount($twig, $post, $user){
   return false;
 }
 
-function verif_mailMdp($post){
+function verif_mail($post){
  $erreurs=array();
  // vérification du format de l'adresse email
  $email = trim($post['mail']);
@@ -109,29 +119,28 @@ function verif_mailMdp($post){
            $erreurs[] = 'L\'adresse mail n\'est pas valide.';
        }
    }
-
-   // vérification des mots de passe
-   $passe1 = trim($post['password']);
-   $passe2 = trim($post['passwordconfirm']);
-   if (empty($passe1) || empty($passe2)) {
-       $erreurs[] = 'Les mots de passe ne doivent pas être vides.';
-   }else{
-     if (mb_strlen($passe1, 'UTF-8') > LMAX_PASSWORD){
-         $erreurs[] = 'Le mot de passe ne peut pas dépasser ' . LMAX_PASSWORD . ' caractères.';
-     }else{
-       $noTags = strip_tags($passe1);
-        if ($noTags != $passe1){
-            $erreurs[] = 'Les mots de passe ne peuvent pas contenir de code HTML.';
-        }else{
-         if ($passe1 !== $passe2) {
-             $erreurs[] = 'Les mots de passe doivent être identiques.';
-         }
-       }
-     }
-   }
-
    return $erreurs;
 }
+
+function verif_mdp($passe1){
+  $erreurs=array();
+  // vérification des mots de passe
+  if (empty($passe1)) {
+      $erreurs[] = 'Le mot de passe ne doit pas être vide.';
+  }else{
+    if (mb_strlen($passe1, 'UTF-8') > LMAX_PASSWORD){
+        $erreurs[] = 'Le mot de passe ne peut pas dépasser ' . LMAX_PASSWORD . ' caractères.';
+    }else{
+      $noTags = strip_tags($passe1);
+       if ($noTags != $passe1){
+           $erreurs[] = 'Le mots de passe ne peut pas contenir de code HTML.';
+      }
+    }
+  }
+  return $erreurs;
+}
+
+
 
 function verif_entree($post){
   $erreurs=array();
@@ -181,7 +190,7 @@ function verif_entree($post){
       }
   }
 
-  $erreurs=array_merge($erreurs, verif_mailMdp($post));
+  $erreurs=array_merge($erreurs, verif_mail($post));
 
      // vérification de phone number
      $phone = trim($post['phoneNumber']);
@@ -282,15 +291,23 @@ function verif_entree($post){
                 $erreurs[] = 'Le code postal doit contenir 5 chiffres.';
             }
          }
-     }    
+     }
+     
+    // vérification des mots de passe
+   $passe1 = trim($post['password']);
+   $passe2 = trim($post['passwordconfirm']);
+    $erreurs=array_merge($erreurs, verif_mdp($passe1));
+    if ($passe1 !== $passe2) {
+        $erreurs[] = 'Les mots de passe doivent être identiques.';
+    }
 
     return $erreurs;
   }
 
 
-  function connectUser($twig, $post, $user, $connected){
-    $erreurs=verif_mailMdp($post);
-    var_dump($erreurs);
+  function connectUser($twig, $post, $login, $connected, $user){
+    $erreurs=verif_mail($post);
+    $erreurs=array_merge($erreurs, verif_mdp($post['password']));
     if (count($erreurs) != 0){
       $template = $twig->load('login.twig');
       echo $template->render(array(
@@ -299,8 +316,8 @@ function verif_entree($post){
           'data' => $post
       ));
     }else{
-      $user=$user->get_user_by_email($post['mail']);
-      if (count($user) == 0){
+      $login=$login->get_login_by_email($post['mail']);
+      if (count($login) == 0){
         $erreurs[] = 'L\'adresse mail n\'existe pas.';
         $template = $twig->load('login.twig');
         echo $template->render(array(
@@ -309,10 +326,11 @@ function verif_entree($post){
             'data' => $post
         ));
       }else{
-        if (password_verify($post['password'], $user[0]->password)){
-          $_SESSION['user']=$user[0]->id;
+        if (password_verify($post['password'], $login[0]->password)){
+          $_SESSION['user']=$login[0]->customer_id;
           $template = $twig->load('example.twig');
-          $title="Bienvenu(e) ".$user[0]->forname. "!";
+          $user_=$user->get_user_by_id($_SESSION['user']);
+          $title="Bienvenu(e) ".$user_[0]->forname. "!";
           echo $template->render(array(
               'title' => $title,
               'message' => 'Vous êtes connecté ! ',

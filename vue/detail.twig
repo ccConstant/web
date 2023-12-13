@@ -89,7 +89,7 @@
             <h1>{{ product[0].name|capitalize }}</h1>
             <p class="description">{{ product[0].description|capitalize }} </p>    
             <p>{{ product[0].price }} €</p>                  
-            <a href="controleur.php?action=addToCart&id={{product.id}}" class="add-to-cart"><img src="productimages/btnAddToCart.png" alt="image" /></a> 
+            <a href="controleur.php?action=addToCart&id={{product[0].id}}" class="add-to-cart"><img src="productimages/btnAddToCart.png" alt="image" /></a> 
             
         </div>
     </body>
