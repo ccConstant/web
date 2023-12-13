@@ -141,8 +141,7 @@ function verif_mdp($passe1){
 }
 
 
-
-function verif_entree($post){
+function verif_entree($post, $verifMdp=true){
   $erreurs=array();
 
   // vérification du prénom
@@ -293,16 +292,20 @@ function verif_entree($post){
          }
      }
      
+    
     // vérification des mots de passe
-   $passe1 = trim($post['password']);
-   $passe2 = trim($post['passwordconfirm']);
-    $erreurs=array_merge($erreurs, verif_mdp($passe1));
-    if ($passe1 !== $passe2) {
-        $erreurs[] = 'Les mots de passe doivent être identiques.';
-    }
 
+  if ($verifMdp){
+    $passe1 = trim($post['password']);
+    $passe2 = trim($post['passwordconfirm']);
+      $erreurs=array_merge($erreurs, verif_mdp($passe1));
+      if ($passe1 !== $passe2) {
+          $erreurs[] = 'Les mots de passe doivent être identiques.';
+      }
+  }
     return $erreurs;
   }
+
 
 
   function connectUser($twig, $post, $login, $connected, $user){
@@ -350,6 +353,8 @@ function verif_entree($post){
 
     }
   }
+
+  
   
 
     // pas d'erreurs ==> enregistrement de l'utilisateur

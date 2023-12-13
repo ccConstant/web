@@ -48,12 +48,12 @@ class Users {
 	}
 
 	/** Ajoute un user à la table customers */
-	function add_user($data)
+	function add_user($data, $registered=1)
 	{
 	  $sql = "INSERT INTO customers(forname, surname, add1, add2, add3, postcode, phone, email, registered)
 	  values (?,?,?,?,?,?,?,?,?)";
 	  $stmt = self::$connexion->prepare($sql);
-	  $stmt->execute(array($data['firstname'], $data['lastname'], $data['addr'], $data['addr2'], $data['addr3'], $data['postcode'], $data['phoneNumber'], $data['mail'], 1));
+	  $stmt->execute(array($data['firstname'], $data['lastname'], $data['addr'], $data['addr2'], $data['addr3'], $data['postcode'], $data['phoneNumber'], $data['mail'], $registered));
 	  return self::$connexion->lastInsertId();
 	}
 }

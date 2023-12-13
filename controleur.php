@@ -69,17 +69,30 @@ switch ($action) {
     case "createAccount":
         $connected=createAccount($twig, $_POST, $user, $login);
         break;
-        
     case "buy": 
-        if ($connected){
-            $template = $twig->load('buyConnected.twig');
-            echo $template->render(array(
-            ));
+        if($_SESSION['cart']!=null){
+            foreach($_SESSION['cart'] as $key => $value){
+                if($value!=0){
+                    if ($connected){
+                        $template = $twig->load('buyConnected.twig');
+                        echo $template->render(array(
+                        ));
+                    }else{
+                        
+                        $template = $twig->load('buyNotConnected.twig');
+                        echo $template->render(array(
+                        ));
+                    }
+                }
+            }
         }else{
-            $template = $twig->load('buyNotConnected.twig');
+            $template = $twig->load('welcome.twig');
             echo $template->render(array(
             ));
         }
+        break;
+    case "payment":
+        payment($twig, $_POST, $user);
         break;
     case "login":
         $template = $twig->load('login.twig');
