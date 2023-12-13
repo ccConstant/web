@@ -354,6 +354,30 @@ function verif_entree($post, $verifMdp=true){
     }
   }
 
+  function payment($twig, $post, $user){
+    $erreurs=verif_entree($post, false);
+    $res=$user->get_user_by_email($post['mail']);
+    if (count($res)!=0){
+      $erreurs[] = 'Cette adresse mail est déjà utilisée.';
+    }
+  
+    if (count($erreurs) != 0){
+      $template = $twig->load('buyNotConnected.twig');
+      echo $template->render(array(
+          'errors' => $erreurs,
+          'data' => $post
+      ));
+    }else{
+      $id=$user->add_user($post, 0);
+      $user=$user->get_user_by_id($id);
+      $template = $twig->load('payment.twig');
+      echo $template->render(array(
+          'connected' => false,
+        ));
+    }
+  }
+
+
   
   
 
