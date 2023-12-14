@@ -502,8 +502,8 @@ function verif_entree($post, $verifMdp=true){
     foreach ($_SESSION['cart'] as $key => $value) {
       if ($value != 0) {
         $product_data=$product->get_product_by_id($key);
-        //$quantity=$product_data[0]->quantity-$value; TODO
-       //$product->update_quantity($key, $quantity);
+        $quantity=$product_data[0]->quantity-$value; 
+        $product->set_quantity($key, $quantity);
         $total+=$value*$product_data[0]->price;
       }
     }

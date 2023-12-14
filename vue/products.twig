@@ -14,22 +14,24 @@
                 <tbody>
                 <div class="biscuit-container">
                     {% for item in products %}
-                        <div class="introduction">
-                                <div class="card" style="width: 18rem;">
-                                    <img src={{lien[item.id]}}>
-                                    <div class="card-body">
-                                        <a href="controleur.php?action=detail&id={{item.id}}"><h5 class="card-title">{{ item.name }}</h5></a>
-                                        <div class="description">
-                                        <p class="card-text">{{ item.description|capitalize }}</p>
-                                        <div class="prix">
-                                        <p >{{ item.price }} €</p> 
+                        {% if (item.quantity!='0') %}
+                            <div class="introduction">
+                                    <div class="card" style="width: 18rem;">
+                                        <img src={{lien[item.id]}}>
+                                        <div class="card-body">
+                                            <a href="controleur.php?action=detail&id={{item.id}}"><h5 class="card-title">{{ item.name }}</h5></a>
+                                            <div class="description">
+                                            <p class="card-text">{{ item.description|capitalize }}</p>
+                                            <div class="prix">
+                                            <p >{{ item.price }} €</p> 
+                                            </div>
+                                            </div> <br>
+                                            
+                                            <a href="controleur.php?action=addToCart&id={{item.id}}" class="add-to-cart"><img src="productimages/btnAddToCart.png" alt="image" /></a>
                                         </div>
-                                        </div> <br>
-                                        
-                                        <a href="controleur.php?action=addToCart&id={{item.id}}" class="add-to-cart"><img src="productimages/btnAddToCart.png" alt="image" /></a>
                                     </div>
-                                </div>
-                        </div>
+                            </div>
+                        {% endif %}
                     {% endfor %}
                 </div>
                 </tbody>                

@@ -147,9 +147,16 @@ switch ($action) {
 
         break;
     case "addQuantity":
-        $_SESSION['cart'][$_GET['id']]+=1;
+        $product_item=$product->get_product_by_id($_GET['id']);
+        //convert string to int
+        $quantity=intval($product_item[0]->quantity);
+        $cart=intval($_SESSION['cart'][$_GET['id']]);
+        var_dump($quantity);
+        var_dump($cart);
+        if($quantity>$cart){
+            $_SESSION['cart'][$_GET['id']]+=1;
+        }
         header("Location: controleur.php?action=cartconsult");
-        //cartConsult($twig, $product, $connected);
         break;
     case "removeQuantity":
         $_SESSION['cart'][$_GET['id']]-=1;
