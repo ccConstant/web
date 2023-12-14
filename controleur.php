@@ -35,10 +35,13 @@ if (isset($_SESSION['user']) && $_SESSION['user']!=null){
 var_dump($connected);
 switch ($action) {
     case "welcome":
+        $template = $twig->load('navbar.twig');
+        echo $template->render(array(
+            'connected' => $connected,
+        ));
         $template = $twig->load('welcome.twig');
         echo $template->render(array(
             'titre' => "Welcome ! ",
-            'connected' => $connected,
         ));
         break;
     case "list": 
@@ -56,16 +59,23 @@ switch ($action) {
         }else{
             $_SESSION['cart'][$_GET['id']]+=1;
         }
+        $template = $twig->load('navbar.twig');
+        echo $template->render(array(
+            'connected' => $connected,
+        ));
         $template = $twig->load('example.twig');
         echo $template->render(array(
             'message' => "Produit ajouté au panier ! ",
-            'connected' => $connected,
         ));
         break;
     case "cartconsult": 
         cartConsult($twig, $product, $connected);
         break;
     case "subscribe" : 
+        $template = $twig->load('navbar.twig');
+        echo $template->render(array(
+            'connected' => $connected,
+        ));
         $template = $twig->load('subscribe.twig');
         echo $template->render(array(
         ));
@@ -74,6 +84,10 @@ switch ($action) {
         $connected=createAccount($twig, $_POST, $user, $login);
         break;
     case "buy": 
+        $template = $twig->load('navbar.twig');
+        echo $template->render(array(
+            'connected' => $connected,
+        ));
         if($_SESSION['cart']!=null){
             foreach($_SESSION['cart'] as $key => $value){
                 if($value!=0){
@@ -102,6 +116,10 @@ switch ($action) {
         payment($twig, $_POST, $user, $connected, $deliveryAdresses);
         break;
     case "login":
+        $template = $twig->load('navbar.twig');
+        echo $template->render(array(
+            'connected' => $connected,
+        ));
         $template = $twig->load('login.twig');
         echo $template->render(array(
         ));
@@ -118,10 +136,13 @@ switch ($action) {
     case "disconnect":
         unset($_SESSION['user']);
         unset($_SESSION['cart']);
+        $template = $twig->load('navbar.twig');
+        echo $template->render(array(
+            'connected' => false,
+        ));
         $template = $twig->load('welcome.twig');
         echo $template->render(array(
             'titre' => "Welcome ! ",
-            'connected' => false,
         ));
 
         break;

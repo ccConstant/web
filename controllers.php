@@ -13,24 +13,32 @@ define('LMAX_PASSWORD', 40); //longueur du champ dans la base de données
 require_once 'modele/products.php';
 
 function list_action($twig, $categorie, $product, $connected){
-  $template = $twig->load('products.twig');
   $products=$product->get_products_by_cat($categorie);
   $lien=array();
   foreach ($products as $key => $value) {
     $lien[$value->id]="./productimages/".$products[$key]->image;
   }
+  $template = $twig->load('navbar.twig');
+  echo $template->render(array(
+      'connected' => $connected,
+  ));
+  $template = $twig->load('products.twig');
   echo $template->render(array(
       'titre' => "Welcome ! ",
       'products' => $products,
       'lien' => $lien,
-      'connected' => $connected,
   ));
 }
 
 function detail_action($product,$twig, $id){
+  $template = $twig->load('navbar.twig');
+  echo $template->render(array(
+      'connected' => $connected,
+  ));
   $template = $twig->load('detail.twig');
   $p=$product->get_product_by_id($id);
   $titre="Détails";
+
   echo $template->render(array(
             'titre' => $titre,
             'product' => $p,
@@ -56,12 +64,15 @@ function cartConsult($twig, $product, $connected){
       }
     }
   }
+  $template = $twig->load('navbar.twig');
+  echo $template->render(array(
+      'connected' => $connected,
+  ));
   $template = $twig->load('cart.twig');
   echo $template->render(array(
       'titre' => "Panier",
       'cart' => $products,
       'quantite' => $quantite,
-      'connected' => $connected,
       'lien' => $lien,
       'total' => $total,
       'sousTotal' => $sousTotal,
@@ -77,6 +88,10 @@ function createAccount($twig, $post, $user, $login){
   }
 
   if (count($erreurs) != 0){
+    $template = $twig->load('navbar.twig');
+    echo $template->render(array(
+        'connected' => $connected,
+    ));
     $template = $twig->load('subscribe.twig');
     echo $template->render(array(
         'titre' => "Inscription",
@@ -89,12 +104,15 @@ function createAccount($twig, $post, $user, $login){
     $_SESSION['user']=$user->add_user($post);
     $login->add_login(array('customer_id' => $_SESSION['user'], 'username' => $post['mail'], 'password' => $password));
     $user=$user->get_user_by_id($_SESSION['user']);
+    $template = $twig->load('navbar.twig');
+    echo $template->render(array(
+        'connected' => true,
+    ));
     $template = $twig->load('example.twig');
     $title="Bienvenu(e) ".$user[0]->forname. "!";
     echo $template->render(array(
         'title' => $title,
         'message' => 'Votre compte a bien été créé ! ',
-        'connected' => true,
       ));
     return true;
   }
@@ -305,6 +323,10 @@ function verif_entree($post, $verifMdp=true){
     $erreurs=verif_mail($post);
     $erreurs=array_merge($erreurs, verif_mdp($post['password']));
     if (count($erreurs) != 0){
+      $template = $twig->load('navbar.twig');
+      echo $template->render(array(
+          'connected' => $connected,
+      ));
       $template = $twig->load('login.twig');
       echo $template->render(array(
           'titre' => "Connexion",
@@ -315,6 +337,10 @@ function verif_entree($post, $verifMdp=true){
       $login=$login->get_login_by_email($post['mail']);
       if (count($login) == 0){
         $erreurs[] = 'L\'adresse mail n\'existe pas.';
+        $template = $twig->load('navbar.twig');
+        echo $template->render(array(
+            'connected' => $connected,
+        ));
         $template = $twig->load('login.twig');
         echo $template->render(array(
             'titre' => "Connexion",
@@ -324,17 +350,24 @@ function verif_entree($post, $verifMdp=true){
       }else{
         if (password_verify($post['password'], $login[0]->password)){
           $_SESSION['user']=$login[0]->customer_id;
+          $template = $twig->load('navbar.twig');
+          echo $template->render(array(
+              'connected' => true,
+          ));
           $template = $twig->load('example.twig');
           $user_=$user->get_user_by_id($_SESSION['user']);
           $title="Bienvenu(e) ".$user_[0]->forname. "!";
           echo $template->render(array(
               'title' => $title,
               'message' => 'Vous êtes connecté ! ',
-              'connected' => true,
             ));
           return true;
         }else{
           $erreurs[] = 'Le mot de passe est incorrect.';
+          $template = $twig->load('navbar.twig');
+          echo $template->render(array(
+              'connected' => $connected,
+          ));
           $template = $twig->load('login.twig');
           echo $template->render(array(
               'titre' => "Connexion",
@@ -358,6 +391,10 @@ function verif_entree($post, $verifMdp=true){
       }
     
       if (count($erreurs) != 0){
+        $template = $twig->load('navbar.twig');
+        echo $template->render(array(
+            'connected' => $connected,
+        ));
         $template = $twig->load('buyNotConnected.twig');
         echo $template->render(array(
             'errors' => $erreurs,
@@ -369,9 +406,13 @@ function verif_entree($post, $verifMdp=true){
 
         $id=$user->add_user($post, 0);
         $_SESSION['userTemp']=$id;
-        $template = $twig->load('payment.twig');
+        $template = $twig->load('navbar.twig');
         echo $template->render(array(
             'connected' => false,
+        ));
+        $template = $twig->load('payment.twig');
+        echo $template->render(array(
+
           ));
       }
 
@@ -380,15 +421,22 @@ function verif_entree($post, $verifMdp=true){
       $user=$user->get_user_by_id($_SESSION['user']);
       if (isset($post['new']) && $post['new']==1){
         //cas où on choisit l'adresse préremplie
-        $template = $twig->load('payment.twig');
+        $template = $twig->load('navbar.twig');
         echo $template->render(array(
             'connected' => true,
+        ));
+        $template = $twig->load('payment.twig');
+        echo $template->render(array(
           ));
       }else{
         //cas où on saisit une nouvelle adresse 
         $erreurs=verif_addr($post);
         //si erreurs
         if (count($erreurs) != 0){
+          $template = $twig->load('navbar.twig');
+          echo $template->render(array(
+              'connected' => $connected,
+          ));
           $template = $twig->load('buyConnected.twig');
           echo $template->render(array(
               'errors' => $erreurs,
@@ -409,9 +457,12 @@ function verif_entree($post, $verifMdp=true){
           $newAdress['email']=$user[0]->email;
           $id=$deliveryAdresses->add_deliveryAdresses($newAdress);
           $_SESSION['orderAdress']=$id;
-          $template = $twig->load('payment.twig');
+          $template = $twig->load('navbar.twig');
           echo $template->render(array(
               'connected' => true,
+          ));
+          $template = $twig->load('payment.twig');
+          echo $template->render(array(
             ));
 
         }
