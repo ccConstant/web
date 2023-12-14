@@ -1,1 +1,192 @@
-<h1> Différents moyens de paiments </h1>
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">
+        
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    </head>
+    <header>
+        <nav class="navbar navbar-expand-lg bg-body-tertiary" style="background-color: #e3f2fd;">
+            <div class="container-fluid">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                     <a href="controleur.php"><img class="logo" src="productimages/livetoeat.jpg"></a>
+                    <h1>Les délices de Kam & CC </h1>
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <span class="badge badge-pill badge-info"><a class="nav-link active" aria-current="page" href="controleur.php?action=list&categorie=2">BISCUITS</a></span>
+                        </li>
+                        <li class="nav-item">
+                            <span class="badge badge-pill badge-info"><a class="nav-link active" aria-current="page" href="controleur.php?action=list&categorie=1">BOISSONS</a></span>
+                        </li>
+                        <li class="nav-item">
+                            <span class="badge badge-pill badge-info"><a class="nav-link active" aria-current="page" href="controleur.php?action=list&categorie=3">FRUITS SECS </a></span>
+                        </li>
+                        <p class="separate"></p>
+                        <p class="separate"></p>
+                        <p class="separate"></p>
+                        <p class="separate"></p>
+                        <p class="separate"></p>
+                        <div class="d-flex justify-content-right">
+                            <!-- cart-->
+                            <li class="nav-item">
+                                <a onmouseover="Coucou" href="controleur.php?action=cartconsult"><svg xmlns="http://www.w3.org/2000/svg" width="60" height="60"  class="bi bi-cart" viewBox="0 0  70">
+                                <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
+                                </svg></a>
+                            </li>
+                            {% if connected %}
+                            <p class="separate"></p>
+                            <!-- my account (TO DO)-->
+                            <li class="nav-item">
+                                <a href=""><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30"  class="bi bi-person" viewBox="0 0 16 16" >
+                                <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664z"/>
+                                </svg></a>
+                            </li>
+                            <p class="separate"></p>
+                            <!-- deconnexion (TO DO) -->
+                            <li class="nav-item">
+                                <a href="controleur.php?action=disconnect"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0z"/>
+                                <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"/>
+                                </svg></a>
+
+                            </li>
+                            {% else %}
+                                <!-- login -->
+                                <p class="separate"></p>
+                                <li class="nav-item">
+                                    <a href="controleur.php?action=login"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-right" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0z"/>
+                                    <path fill-rule="evenodd" d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"/>
+                                    </svg></a>
+                                </li>
+                                <p class="separate"></p>
+
+                                <!-- create account -->
+                                <li class="nav-item">
+                                     <a href="controleur.php?action=subscribe"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                        <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                                        </svg></a>
+                                </li>
+                            {% endif %}
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <body>
+        <br>
+       <h1> Différents moyens de paiments </h1>
+        <a href="controleur.php?action=order"><button class="btn btn-primary" >Acheter </button></a>
+        </div>
+    </body>
+</html>
+
+
+
+
+
+<style>
+
+
+/* for nav bar*/
+.inline{
+    display: inline-block;
+    width:2000px;
+    
+}
+.separate{
+    margin-left:20px;
+}
+a {  color: deeppink; text-decoration: none; }
+
+header {
+    background-color:pink;
+    
+    padding: 30px 0;
+}
+h1 { color: #F90B6D; font-family: " Great Vibes, cursive" ; font-size: 50px; font-weight: 400; line-height: 40px; margin-left : 30px; margin-right : 70px; }
+
+.logo{
+    width:100px;
+    height:100px;
+}
+
+/* end*/
+
+
+
+.acheter{
+  margin-left:90%;
+  margin-bottom:20px;
+   
+}
+
+.trash{
+    width:20px;
+    height:20px;
+    position: absolute;
+    top: 10px; 
+    right: 10px; 
+}
+
+.introduction {
+    flex: 0 0 calc(25% - 20px);
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
+    background-color: #fff; 
+    color: #333; 
+    margin-bottom:20px;
+    margin-left:12px;
+    margin-top:20px;
+    
+}
+
+h2 {  color: #d54d7b; font-family: "Great Vibes", cursive; font-size: 50px; line-height: 40px; font-weight: normal; margin-top: 30px; text-align: center; text-shadow: 0 1px 1px #fff; }
+p{ font-size:15px}
+
+.biscuit-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        gap: 10px;
+    }
+
+.card-text {
+        line-height: 1.5;
+        text-align: left;
+        
+    }
+
+.card-title{
+    font-family: " Great Vibes, cursive";
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    font-size:30px;
+    text-align:center;
+}
+
+.card {
+        width: 18rem;
+        display: flex;
+        flex-direction: column;
+        height: 60%;
+        
+    }
+
+.enBasCard{
+    position: absolute;
+    bottom: 10px; 
+    margin-left:20px;
+
+}    
+
+</style>

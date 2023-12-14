@@ -5,6 +5,8 @@ require("modele/connect.php");
 require_once 'modele/products.php';
 require_once 'modele/users.php';
 require_once 'modele/logins.php';
+require_once 'modele/orders.php';
+require_once 'modele/delivery_adresses.php';
 include 'vendor/autoload.php';
 // le dossier ou on trouve les templates
 $loader = new Twig\Loader\FilesystemLoader('vue');
@@ -24,6 +26,8 @@ $message = "";
 $product=new Products();
 $login=new Logins();
 $user=new Users();
+$order=new Orders();
+$deliveryAdresses=new Delivery_adresses();
 $connected=false ;
 if (isset($_SESSION['user']) && $_SESSION['user']!=null){   
     $connected=true;
@@ -74,8 +78,11 @@ switch ($action) {
             foreach($_SESSION['cart'] as $key => $value){
                 if($value!=0){
                     if ($connected){
+                        $user=$user->get_user_by_id($_SESSION['user']);
                         $template = $twig->load('buyConnected.twig');
                         echo $template->render(array(
+                            'data' => $user[0],
+                            
                         ));
                     }else{
                         
@@ -92,7 +99,7 @@ switch ($action) {
         }
         break;
     case "payment":
-        payment($twig, $_POST, $user);
+        payment($twig, $_POST, $user, $connected, $deliveryAdresses);
         break;
     case "login":
         $template = $twig->load('login.twig');
@@ -109,7 +116,8 @@ switch ($action) {
         //rediriger vers la page d'accueil
         break ; 
     case "disconnect":
-        $_SESSION['user']=null;
+        unset($_SESSION['user']);
+        unset($_SESSION['cart']);
         $template = $twig->load('welcome.twig');
         echo $template->render(array(
             'titre' => "Welcome ! ",
@@ -125,6 +133,10 @@ switch ($action) {
     case "removeQuantity":
         $_SESSION['cart'][$_GET['id']]-=1;
         header("Location: controleur.php?action=cartconsult");
+        break;
+
+    case "order" : 
+        order($twig, $order, $product);
         break;
     /*case "suppr":
        if (suppr_action($cont, $_GET['id']))

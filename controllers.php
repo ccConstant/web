@@ -212,6 +212,25 @@ function verif_entree($post, $verifMdp=true){
          }
      }
 
+    array_merge($erreurs, verif_addr($post));
+    
+    // vérification des mots de passe
+
+  if ($verifMdp){
+    $passe1 = trim($post['password']);
+    $passe2 = trim($post['passwordconfirm']);
+      $erreurs=array_merge($erreurs, verif_mdp($passe1));
+      if ($passe1 !== $passe2) {
+          $erreurs[] = 'Les mots de passe doivent être identiques.';
+      }
+  }
+    return $erreurs;
+  }
+
+  function verif_addr($post ){
+    $erreurs=array();
+
+
     // vérification de ADDR1
     $addr1 = trim($post['addr']);
 
@@ -242,20 +261,7 @@ function verif_entree($post, $verifMdp=true){
       }
     }
 
-    // vérification de ADDR3
-    $addr3 = trim($post['addr3']);
-
-    if (!empty($addr3)) {
-        if (mb_strlen($addr3, 'UTF-8') > LMAX_ADR){
-            $erreurs[] = 'Le deuxième complément d\'adresse ne peut pas dépasser ' . LMAX_ADR . ' caractères.';
-        }
-        $noTags = strip_tags($addr3);
-        if ($noTags != $addr3){
-            $erreurs[] = 'Le deuxième complément d\'adresse ne peut pas contenir de code HTML.';
-        }
-    }
-
-       // vérification de ville
+      // vérification de ville
 
       $ville = trim($post['city']);
       if (empty($ville)) {
@@ -271,41 +277,28 @@ function verif_entree($post, $verifMdp=true){
       }
 
 
-     // vérification de cp
-     $cp = trim($post['postcode']);
+    // vérification de cp
+    $cp = trim($post['postcode']);
 
-     if (empty($cp)) {
-         $erreurs[] = 'Le code postal doit être renseigné.';
-     }
-     else {
-         if (mb_strlen($cp, 'UTF-8') > LMAX_CP){
-             $erreurs[] = 'Le code postal ne peut pas dépasser ' . LMAX_CP . ' caractères.';
-         }
-         $noTags = strip_tags($cp);
-         if ($noTags != $cp){
-             $erreurs[] = 'Le code postal ne peut pas contenir de code HTML.';
-         }else{
+    if (empty($cp)) {
+        $erreurs[] = 'Le code postal doit être renseigné.';
+    }
+    else {
+        if (mb_strlen($cp, 'UTF-8') > LMAX_CP){
+            $erreurs[] = 'Le code postal ne peut pas dépasser ' . LMAX_CP . ' caractères.';
+        }
+        $noTags = strip_tags($cp);
+        if ($noTags != $cp){
+            $erreurs[] = 'Le code postal ne peut pas contenir de code HTML.';
+        }else{
           mb_regex_encoding ('UTF-8'); //définition de l'encodage des caractères pour les expressions rationnelles multi-octets
             if( !mb_ereg_match('^[0-9]{5}$', $cp)){
                 $erreurs[] = 'Le code postal doit contenir 5 chiffres.';
             }
-         }
-     }
-     
-    
-    // vérification des mots de passe
-
-  if ($verifMdp){
-    $passe1 = trim($post['password']);
-    $passe2 = trim($post['passwordconfirm']);
-      $erreurs=array_merge($erreurs, verif_mdp($passe1));
-      if ($passe1 !== $passe2) {
-          $erreurs[] = 'Les mots de passe doivent être identiques.';
-      }
-  }
+        }
+    }
     return $erreurs;
   }
-
 
 
   function connectUser($twig, $post, $login, $connected, $user){
@@ -354,27 +347,142 @@ function verif_entree($post, $verifMdp=true){
     }
   }
 
-  function payment($twig, $post, $user){
-    $erreurs=verif_entree($post, false);
-    $res=$user->get_user_by_email($post['mail']);
-    if (count($res)!=0){
-      $erreurs[] = 'Cette adresse mail est déjà utilisée.';
-    }
-  
-    if (count($erreurs) != 0){
-      $template = $twig->load('buyNotConnected.twig');
-      echo $template->render(array(
-          'errors' => $erreurs,
-          'data' => $post
-      ));
-    }else{
-      $id=$user->add_user($post, 0);
-      $user=$user->get_user_by_id($id);
-      $template = $twig->load('payment.twig');
-      echo $template->render(array(
-          'connected' => false,
+  function payment($twig, $post, $user, $connected, $deliveryAdresses){
+    
+    //cas non co
+    if (!$connected){
+      $erreurs=verif_entree($post, false);
+      $res=$user->get_user_by_email($post['mail']);
+      if (count($res)!=0){
+        $erreurs[] = 'Cette adresse mail est déjà utilisée.';
+      }
+    
+      if (count($erreurs) != 0){
+        $template = $twig->load('buyNotConnected.twig');
+        echo $template->render(array(
+            'errors' => $erreurs,
+            'data' => $post
         ));
+
+        
+      }else{
+
+        $id=$user->add_user($post, 0);
+        $_SESSION['userTemp']=$id;
+        $template = $twig->load('payment.twig');
+        echo $template->render(array(
+            'connected' => false,
+          ));
+      }
+
+    //cas co 
+    }else{
+      $user=$user->get_user_by_id($_SESSION['user']);
+      if (isset($post['new']) && $post['new']==1){
+        //cas où on choisit l'adresse préremplie
+        $template = $twig->load('payment.twig');
+        echo $template->render(array(
+            'connected' => true,
+          ));
+      }else{
+        //cas où on saisit une nouvelle adresse 
+        $erreurs=verif_addr($post);
+        //si erreurs
+        if (count($erreurs) != 0){
+          $template = $twig->load('buyConnected.twig');
+          echo $template->render(array(
+              'errors' => $erreurs,
+              'data' => $user[0],
+              'data2' => $post
+          ));
+        //si pas d'erreurs
+         //on créé une nouvelle delevery adress et on l'ajoute à la session
+        }else{
+          $newAdress=array();
+          $newAdress['firstname']=$user[0]->forname;
+          $newAdress['lastname']=$user[0]->surname;
+          $newAdress['city']=$post['city'];
+          $newAdress['addr']=$post['addr'];
+          $newAdress['addr2']=$post['addr2'];
+          $newAdress['postcode']=$post['postcode'];
+          $newAdress['phone']=$user[0]->phone;
+          $newAdress['email']=$user[0]->email;
+          $id=$deliveryAdresses->add_deliveryAdresses($newAdress);
+          $_SESSION['orderAdress']=$id;
+          $template = $twig->load('payment.twig');
+          echo $template->render(array(
+              'connected' => true,
+            ));
+
+        }
+      }
     }
+  }
+    
+
+        //cas co 
+
+
+
+
+    //cas co 
+    //if il choisit l'adresse actuelle
+
+
+    //if il choisit une nouvelle adresse
+
+    //verif de la nouvelle adresse 
+    //si pas d'erreurs 
+    //ajouter l'adresse à la base de données
+    //rediriger vers la page de paiement
+
+
+
+
+  function order($twig, $order, $product){
+    $infos=array();
+    $infos['delivery_add_id']=null;
+    $infos['date']=date("Y-m-d H:i:s");
+    $infos['payment_type']="cheque"; //TODO
+    $infos['status']=2;
+    $infos['session']=0;
+    $registered=0;
+    $total=0; 
+    foreach ($_SESSION['cart'] as $key => $value) {
+      if ($value != 0) {
+        $product_data=$product->get_product_by_id($key);
+        //$quantity=$product_data[0]->quantity-$value; TODO
+       //$product->update_quantity($key, $quantity);
+        $total+=$value*$product_data[0]->price;
+      }
+    }
+    if ($_SESSION['orderAdress']!=null){
+      $infos['delivery_add_id']=$_SESSION['orderAdress'];
+    }
+      if (isset($_SESSION['user']) && $_SESSION['user']!=null){
+        $infos['session']=session_id();
+        $infos['customer_id']=$_SESSION['user'];
+        $registered=1;
+      }else{
+        $infos['customer_id']=$_SESSION['userTemp'];
+
+      }
+
+      $infos['total']=$total;
+      $_SESSION['cart']=null;
+      $_SESSION['orderAdress']=null;
+      $order=$order->add_order($infos, $registered);
+      $template = $twig->load('done.twig');
+      echo $template->render(array(
+          'connected' => true,
+        ));
+
+
+      // TO DO 
+      //modifier la quantité des produits dans la base de données
+
+    
+  
   }
 
 

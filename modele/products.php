@@ -29,6 +29,14 @@ class Products {
 	  return $data->fetchAll(PDO::FETCH_OBJ);
 	}
 
+	/** Modifie la quantité d'un produit */
+	function set_quantity($id, $quantity)
+	{
+	  $sql="UPDATE products SET quantity=$quantity WHERE id=$id";
+	  $data=self::$connexion->prepare($sql);
+	  $data->execute();
+	}
+
 	/** Récupére la liste des produits par catégorie sous forme d'un tableau */
 	function get_products_by_cat($cat)
 	{

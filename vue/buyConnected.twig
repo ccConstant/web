@@ -84,11 +84,91 @@
     <br>
     <div class="progress" role="progressbar"  aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
   <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 50%">50%</div>
-</div>
+</div><br><br>
 
-
-     Coucou connected ! 
+    <form method="POST" action="controleur.php?action=payment">
+     <div class="form-check">
+        <input class="form-check-input" type="radio" name="new" value="1" id="flexRadioDefault1" >
+        <label class="form-check-label" for="flexRadioDefault1">
+        <p> Adresse du compte</p>
+        </label>
         
+        <div class="row">
+            <div class="col-md-6">
+                <label for="address" class="form-label">Address</label>
+                <input id="addr" class="form-control" type="text" name="addr" value="{{data.add1}}" placeholder="Enter your address" disabled>
+            </div>
+            <div class="col-md-6">
+            <label for="adress_complement" class="form-label">Adress complement</label>
+            <input id="addr2" class="form-control" type="text" name="addr2" value="{{data.add2}}" placeholder="Enter your adress complement" disabled>
+            </div>
+            
+        </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                <label for="postcode" class="form-label">Postcode</label>
+                <input id="postcode" class="form-control" type="text" value="{{data.postcode}}" name="postcode" placeholder="69000" disabled>
+                </div>
+                <div class="col-md-6">
+                <label for="city" class="form-label">City</label>
+                <input id="city" class="form-control" type="text" value="{{data.add3}}" name="city" placeholder="Lyon" disabled>
+                </div>
+            </div>
+           
+    </div>
+   
+
+
+   
+    <div class="form-check">
+        <input class="form-check-input" type="radio" value="2" name="new" id="flexRadioDefault2" checked>
+        <label class="form-check-label" for="flexRadioDefault2" >
+        <p> Nouvelle adresse</p>
+        </label>
+        
+        
+
+            <div class="row">
+                <div class="col-md-6">
+                <label for="address" class="form-label">Address</label>
+                <input id="addr" class="form-control" type="text" name="addr" value="{{data2.addr}}" placeholder="Enter your address">
+                </div>
+                <div class="col-md-6">
+                <label for="adress_complement" class="form-label">Adress complement</label>
+                <input id="addr2" class="form-control" type="text" name="addr2" value="{{data2.addr2}}" placeholder="Enter your adress complement">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                <label for="postcode" class="form-label">Postcode</label>
+                <input id="postcode" class="form-control" type="text" value="{{data2.postcode}}" name="postcode" placeholder="69000">
+                </div>
+                <div class="col-md-6">
+                <label for="city" class="form-label">City</label>
+                <input id="city" class="form-control" type="text" value="{{data2.city}}" name="city" placeholder="Lyon">
+                </div>
+            </div>
+    </div>
+
+    <div class="sinscrire">
+            <div class="boutton">
+             <button type="submit" class="btn btn-primary">Passer au paiment</button>
+            </div>
+    </div>
+    </form>
+    
+
+        {% for error in errors %}
+        <p class="errors">{{ error }}</p>
+    {% endfor %}
+
+    
+    
+            
+        
+    </body>
 </html>
 
 <style>
@@ -118,5 +198,16 @@ h1 { color: #F90B6D; font-family: " Great Vibes, cursive" ; font-size: 50px; fon
 }
 
 /* end*/
+h2 { color: #d54d7b; font-family: "Great Vibes", cursive; font-size: 35px; line-height: 40px; font-weight: normal; margin-bottom: 0px; margin-top: 40px; text-align: justify; text-shadow: 0 1px 1px #fff; }
+p { color: #d54d7b; font-size: 29px; font-family: "Great Vibes", cursive; line-height: 45px; text-align: center; text-shadow: 0 1px 1px #fff; }
 
+
+.form-check{
+    margin-right:20%;
+    margin-left:20%;
+}
+
+.errors{
+    color:red;
+}
 </style>

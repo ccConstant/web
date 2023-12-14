@@ -53,7 +53,7 @@ class Users {
 	  $sql = "INSERT INTO customers(forname, surname, add1, add2, add3, postcode, phone, email, registered)
 	  values (?,?,?,?,?,?,?,?,?)";
 	  $stmt = self::$connexion->prepare($sql);
-	  $stmt->execute(array($data['firstname'], $data['lastname'], $data['addr'], $data['addr2'], $data['addr3'], $data['postcode'], $data['phoneNumber'], $data['mail'], $registered));
+	  $stmt->execute(array($data['firstname'], $data['lastname'], $data['addr'], $data['addr2'], $data['city'], $data['postcode'], $data['phoneNumber'], $data['mail'], $registered));
 	  return self::$connexion->lastInsertId();
 	}
 }
