@@ -164,7 +164,7 @@ switch ($action) {
         break;
 
     case "order" : 
-        order($twig, $order, $product);
+        order($twig, $order, $product, $_POST);
         break;
     /*case "suppr":
        if (suppr_action($cont, $_GET['id']))

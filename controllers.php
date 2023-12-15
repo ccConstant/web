@@ -490,11 +490,15 @@ function verif_entree($post, $verifMdp=true){
 
 
 
-  function order($twig, $order, $product){
+  function order($twig, $order, $product, $post){
     $infos=array();
     $infos['delivery_add_id']=null;
     $infos['date']=date("Y-m-d H:i:s");
-    $infos['payment_type']="cheque"; //TODO
+    if (isset($post['new']) && $post['new'] =="1"){
+      $infos['payment_type']="paypal"; 
+    }else{
+      $infos['payment_type']="cheque"; 
+    }
     $infos['status']=2;
     $infos['session']=0;
     $registered=0;
@@ -527,78 +531,4 @@ function verif_entree($post, $verifMdp=true){
       echo $template->render(array(
           'connected' => true,
         ));
-
-
-      // TO DO 
-      //modifier la quantité des produits dans la base de données
-
-    
-  
   }
-
-
-  
-  
-
-    // pas d'erreurs ==> enregistrement de l'utilisateur
-    /*$nomprenom = em_bd_proteger_entree($bd, $nomprenom);
-
-    $passe1 = password_hash($passe1, PASSWORD_DEFAULT);
-    $passe1 = em_bd_proteger_entree($bd, $passe1);
-
-  
-
-
-    $sql = "INSERT INTO clients(cliNomPrenom, cliEmail, cliDateNaissance, cliPassword, cliAdresse, cliCP, cliVille, cliPays)
-            VALUES ('$nomprenom', '$email', $aaaammjj, '$passe1', '', 0, '', '')";
-
-    mysqli_query($bd, $sql) or em_bd_erreur($bd, $sql);
-
-    // mémorisation de l'ID dans une variable de session
-    // cette variable de session permet de savoir si le client est authentifié
-    $_SESSION['id'] = mysqli_insert_id($bd);
-
-    // libération des ressources
-    mysqli_close($bd);
-
-    // redirection vers la page précédente
-    if(isset($_SERVER['HTTP_REFERER']) && !empty($_SERVER['HTTP_REFERER'])) {
-      header("Location: {$_SERVER['HTTP_REFERER']}");
-    }else{
-      header("Location: ../index.php");
-    }
-    exit();*/
-
-
-  /*if (!isset($post['address']) || $post['address'] == "" ){
-    array_push($erreurs,"Vous devez entrer une adresse");
-  }
-  if (!isset($post['city']) || $post['city'] == "" ){
-    array_push($erreurs,"Vous devez entrer une ville");
-  }
-  if (!isset($post['postalcode']) || $post['postalcode'] == "" ){
-    array_push($erreurs,"Vous devez entrer un code postal");
-  }
-  if (!isset($post['phoneNumber']) || $post['phoneNumber'] == ""){
-    array_push($erreurs,"Vous devez entrer un numéro de téléphone");
-  }*/
-
-
-
-    //vérifier si les deux mots de passe sont identiques?
-    //vérifier si le login n'existe pas déjà?
-    //vérifier si le mail n'existe pas déjà?
-    //si tout est ok, créer le compte et rediriger vers la page d'accueil en disant que c'est ok
-
-/*
-function suppr_action($cont, $id){
-  return ($cont->delete_friend_by_id($id));
-}
-
-function patch_action($cont, $id, $naissance, $adresse, $ville){
-  return ($cont->patch($id,$naissance,$adresse,$ville ));
-}
-
-function add_action($cont, $contact){
-  return ($cont->add_friend($contact));
-}*/

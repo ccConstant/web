@@ -13,6 +13,7 @@
     <div class="progress" role="progressbar"  aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
     <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 75%">75%</div>
     </div>
+    <form method="POST" action="controleur.php?action=order">
     <div class="choixPaiement">
         <div class="form-check">
             <input class="form-check-input" type="radio" name="new" value="1" id="flexRadioDefault1" >
@@ -29,8 +30,9 @@
         </div>    
     </div>   
     <div class="acheter">
-        <a href="controleur.php?action=order"><button class="btn btn-primary" >Acheter </button></a>
+        <button type="submit" class="btn btn-primary">Acheter</button>
     </div>
+    </form>
 
 
 
