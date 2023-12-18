@@ -32,7 +32,6 @@ $connected=false ;
 if (isset($_SESSION['user']) && $_SESSION['user']!=null){   
     $connected=true;
 }
-var_dump($connected);
 switch ($action) {
     case "welcome":
         $template = $twig->load('navbar.twig');
@@ -151,8 +150,6 @@ switch ($action) {
         //convert string to int
         $quantity=intval($product_item[0]->quantity);
         $cart=intval($_SESSION['cart'][$_GET['id']]);
-        var_dump($quantity);
-        var_dump($cart);
         if($quantity>$cart){
             $_SESSION['cart'][$_GET['id']]+=1;
         }
