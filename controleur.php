@@ -6,6 +6,7 @@ require_once 'modele/products.php';
 require_once 'modele/users.php';
 require_once 'modele/logins.php';
 require_once 'modele/orders.php';
+require_once 'modele/admin.php';
 require_once 'modele/delivery_adresses.php';
 include 'vendor/autoload.php';
 // le dossier ou on trouve les templates
@@ -17,7 +18,10 @@ $twig = new \Twig\Environment($loader, [
 $twig->addExtension(new \Twig\Extension\DebugExtension());
 
 
-include 'controllers.php';
+include 'productController.php';
+include 'userController.php';
+include 'orderController.php';
+include 'adminController.php';
 // on lit une action en parametre
 // par defaut, 'list'
 $action = $_GET['action'] ?? 'welcome';
@@ -27,16 +31,22 @@ $product=new Products();
 $login=new Logins();
 $user=new Users();
 $order=new Orders();
+$admin=new Admin();
 $deliveryAdresses=new Delivery_adresses();
 $connected=false ;
+$isAdmin=false;
 if (isset($_SESSION['user']) && $_SESSION['user']!=null){   
     $connected=true;
+}
+if (isset($_SESSION['admin']) && $_SESSION['admin']!=null){   
+    $isAdmin=true;
 }
 switch ($action) {
     case "welcome":
         $template = $twig->load('navbar.twig');
         echo $template->render(array(
             'connected' => $connected,
+            'admin' => $isAdmin,
         ));
         $template = $twig->load('welcome.twig');
         echo $template->render(array(
@@ -61,6 +71,7 @@ switch ($action) {
         $template = $twig->load('navbar.twig');
         echo $template->render(array(
             'connected' => $connected,
+            'admin' => $isAdmin,
         ));
         $template = $twig->load('example.twig');
         echo $template->render(array(
@@ -68,12 +79,13 @@ switch ($action) {
         ));
         break;
     case "cartconsult": 
-        cartConsult($twig, $product, $connected);
+        cartConsult($twig, $product, $connected, $isAdmin);
         break;
     case "subscribe" : 
         $template = $twig->load('navbar.twig');
         echo $template->render(array(
             'connected' => $connected,
+            'admin' => $isAdmin,
         ));
         $template = $twig->load('subscribe.twig');
         echo $template->render(array(
@@ -86,6 +98,7 @@ switch ($action) {
         $template = $twig->load('navbar.twig');
         echo $template->render(array(
             'connected' => $connected,
+            'admin' => $isAdmin,
         ));
         if($_SESSION['cart']!=null){
             foreach($_SESSION['cart'] as $key => $value){
@@ -118,6 +131,7 @@ switch ($action) {
         $template = $twig->load('navbar.twig');
         echo $template->render(array(
             'connected' => $connected,
+            'admin' => $isAdmin,
         ));
         $template = $twig->load('login.twig');
         echo $template->render(array(
@@ -128,7 +142,7 @@ switch ($action) {
         cartConsult($twig, $product, $connected);
         break;
     case "connectUser":
-        connectUser($twig, $_POST, $login, $connected, $user);
+        connectUser($twig, $_POST, $login, $connected, $user, $admin);
         //connecter le user 
         //rediriger vers la page d'accueil
         break ; 
@@ -138,6 +152,7 @@ switch ($action) {
         $template = $twig->load('navbar.twig');
         echo $template->render(array(
             'connected' => false,
+            'admin' => $isAdmin,
         ));
         $template = $twig->load('welcome.twig');
         echo $template->render(array(
@@ -161,31 +176,10 @@ switch ($action) {
         break;
 
     case "order" : 
-        order($twig, $order, $product, $_POST);
+        order($twig, $order, $product, $_POST, $connected);
         break;
-    /*case "suppr":
-       if (suppr_action($cont, $_GET['id']))
-            $message = "Contact supprimé avec succès !";
-       else $message = "Pb de suppression !";
-       list_action($cont,$twig,$message);
-       break;
-    case "patch":
-       if (!empty($_GET['id']) and !empty($_GET['naissance']) and !empty($_GET['adresse'])
-        and !empty($_GET['ville'])) {
-           $res = patch_action($cont, $_GET['id'], $_GET['naissance'], $_GET['adresse'], $_GET['ville']);
-       }
-         if (!empty($res))
-            $message = "Contact modifié avec succès!";
-         else
-            $message = "Pb de modification";
-        list_action($cont,$twig,$message);
-        break;
-	  case "add":
-      if (add_action($cont, $_GET))
-		       $message = "Le contact ".$_GET['nom']." ajouté avec succès !";
-	    else $message = "Pb d'ajout lors de l'ajout du contact !";
-      list_action($cont,$twig,$message);
-      break;*/
+    case "adminConsult":
+        adminConsult($twig, $isAdmin, $connected, $order);
     default:
     $template = $twig->load('welcome.twig');
 }

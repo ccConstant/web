@@ -3,7 +3,7 @@
 /** Classe de gestion des produits servant de modèle
 *   à notre application avec des méthodes de type CRUD
 */
-class Orders {
+class Admin {
 	/** Objet contenant la connexion pdo à la BD */
 	private static $connexion;
 
@@ -20,23 +20,12 @@ class Orders {
 		}
 	}
 
-	/** Ajoute un produit à la table contacts */
-	function add_order($data, $registered=true)
+	/** Récupère un login à partir de l'adresse mail */
+	function get_admin_by_email($email)
 	{
-	  $sql = "INSERT INTO orders(customer_id, registered, delivery_add_id, payment_type, date, status, session, total)
-	  values (?,?,?,?,?,?,?,?)";
-	  $stmt = self::$connexion->prepare($sql);
-	  return $stmt->execute(array($data['customer_id'], $registered,$data['delivery_add_id'],$data['payment_type'], $data['date'], $data['status'], $data['session'], $data['total']));
-		
-	}
-
-	/**récupère toutes les commandes non validées */
-	function get_orders()
-	{
-	  $sql="SELECT * from orders where status=2";
+	  $sql="SELECT * from admin where username='$email'";
 	  $data=self::$connexion->prepare($sql);
 	  $data->execute();
 	  return $data->fetchAll(PDO::FETCH_OBJ);
 	}
-
 }
