@@ -250,7 +250,7 @@ function createAccount($twig, $post, $user, $login){
     }
   
   
-    function connectUser($twig, $post, $login, $connected, $user, $admin){
+    function connectUser($twig, $post, $login, $connected, $user, $admin, $isAdmin){
       $erreurs=verif_mail($post);
       $erreurs=array_merge($erreurs, verif_mdp($post['password']));
       if (count($erreurs) != 0){
@@ -265,12 +265,12 @@ function createAccount($twig, $post, $user, $login){
             'data' => $post
         ));
       }else{
-        $login=$login->get_login_by_email($post['mail']);
-        //si le mail n'existe pas dans la table login
-        if (count($login) == 0){
-          $admin=$admin->get_admin_by_email($post['mail']);
-          //si le mail n'existe pas dans la table admin non plus
-          if (count($admin) == 0){
+        $admin=$admin->get_admin_by_email($post['mail']);
+        //si le mail n'existe pas dans la table admin
+        if (count($admin) == 0){
+          $login=$login->get_login_by_email($post['mail']);
+          //si le mail n'existe pas dans la table login non plus
+          if (count($login) == 0){
             $erreurs[] = 'L\'adresse mail n\'existe pas.';
             $template = $twig->load('navbar.twig');
             echo $template->render(array(
@@ -283,16 +283,16 @@ function createAccount($twig, $post, $user, $login){
                 'data' => $post
             ));
           }else{
-            //si le mail existe dans la table admin
-            if (password_verify($post['password'], $admin[0]->password)){
-              $_SESSION['user']=$admin[0]->id;
-              $_SESSION['admin']=true;
+            if (password_verify($post['password'], $login[0]->password)){
+              $_SESSION['user']=$login[0]->customer_id;
               $template = $twig->load('navbar.twig');
               echo $template->render(array(
                   'connected' => true,
+                  'admin' => $isAdmin,
               ));
               $template = $twig->load('example.twig');
-              $title="Bienvenu(e) !";
+              $user_=$user->get_user_by_id($_SESSION['user']);
+              $title="Bienvenu(e) ".$user_[0]->forname. "!";
               echo $template->render(array(
                   'title' => $title,
                   'message' => 'Vous êtes connecté ! ',
@@ -303,6 +303,7 @@ function createAccount($twig, $post, $user, $login){
               $template = $twig->load('navbar.twig');
               echo $template->render(array(
                   'connected' => $connected,
+                  'admin' => $isAdmin,
               ));
               $template = $twig->load('login.twig');
               echo $template->render(array(
@@ -313,19 +314,21 @@ function createAccount($twig, $post, $user, $login){
             }
           }
         }else{
-          if (password_verify($post['password'], $login[0]->password)){
-            $_SESSION['user']=$login[0]->customer_id;
+          //si le mail existe dans la table admin
+          if (password_verify($post['password'], $admin[0]->password)){
+            $_SESSION['user']=$admin[0]->id;
+            $_SESSION['admin']=true;
             $template = $twig->load('navbar.twig');
             echo $template->render(array(
                 'connected' => true,
-                'admin' => $isAdmin,
+                'admin' => true,
             ));
             $template = $twig->load('example.twig');
-            $user_=$user->get_user_by_id($_SESSION['user']);
-            $title="Bienvenu(e) ".$user_[0]->forname. "!";
+            $title="Bienvenu(e) !";
             echo $template->render(array(
                 'title' => $title,
                 'message' => 'Vous êtes connecté ! ',
+
               ));
             return true;
           }else{
@@ -333,7 +336,6 @@ function createAccount($twig, $post, $user, $login){
             $template = $twig->load('navbar.twig');
             echo $template->render(array(
                 'connected' => $connected,
-                'admin' => $isAdmin,
             ));
             $template = $twig->load('login.twig');
             echo $template->render(array(
@@ -343,12 +345,11 @@ function createAccount($twig, $post, $user, $login){
             ));
           }
         }
-  
       }
     }
 
 
-    function payment($twig, $post, $user, $connected, $deliveryAdresses){
+    function payment($twig, $post, $user, $connected, $deliveryAdresses, $isAdmin){
     
         //cas non co
         if (!$connected){

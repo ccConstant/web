@@ -54,6 +54,7 @@
         <p> Total : {{total}} €</p>
         <a href="controleur.php?action=buy"><button class="btn btn-primary" >Acheter </button></a>
         </div>
+        <p class="errors">{{message}}</p>
     </body>
 </html>
 
@@ -62,7 +63,9 @@
 
 
 <style>
-
+.errors{
+        color:red;
+    }
 
 /* for nav bar*/
 .inline{

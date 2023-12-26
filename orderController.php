@@ -1,6 +1,6 @@
 <?php
 
-function order($twig, $order, $product, $post, $connected){
+function order($twig, $order, $product, $post, $connected, $isAdmin){
     $infos=array();
     $infos['delivery_add_id']=null;
     $infos['date']=date("Y-m-d H:i:s");
@@ -21,7 +21,7 @@ function order($twig, $order, $product, $post, $connected){
         $total+=$value*$product_data[0]->price;
       }
     }
-    if ($_SESSION['orderAdress']!=null){
+    if (isset($_SESSION['orderAdress']) && $_SESSION['orderAdress']!=null){
       $infos['delivery_add_id']=$_SESSION['orderAdress'];
     }
       if (isset($_SESSION['user']) && $_SESSION['user']!=null){
@@ -30,13 +30,24 @@ function order($twig, $order, $product, $post, $connected){
         $registered=1;
       }else{
         $infos['customer_id']=$_SESSION['userTemp'];
-
       }
 
       $infos['total']=$total;
+      $order=$order->add_order($infos, $registered);
+
+      $lastOrder=array([
+        'customer_id' => $infos['customer_id'],
+        'delivery_add_id' => $infos['delivery_add_id'],
+        'payment_type' => $infos['payment_type'],
+        'date' => $infos['date'],
+        'total' => $infos['total'],
+        'products' => $_SESSION['cart'],
+        'order_id' => $order,
+      ]);
+
+      $_SESSION['lastOrder']=$lastOrder;
       $_SESSION['cart']=null;
       $_SESSION['orderAdress']=null;
-      $order=$order->add_order($infos, $registered);
       $template = $twig->load('navbar.twig');
       echo $template->render(array(
           'connected' => $connected,

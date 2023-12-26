@@ -3,7 +3,7 @@
 require_once 'modele/products.php';
 
 
-function list_action($twig, $categorie, $product, $connected){
+function list_action($twig, $categorie, $product, $connected, $isAdmin){
   $products=$product->get_products_by_cat($categorie);
   $lien=array();
   foreach ($products as $key => $value) {
@@ -22,7 +22,7 @@ function list_action($twig, $categorie, $product, $connected){
   ));
 }
 
-function detail_action($product,$twig, $id, $connected){
+function detail_action($product,$twig, $id, $connected, $isAdmin){
   $template = $twig->load('navbar.twig');
   echo $template->render(array(
       'connected' => $connected,

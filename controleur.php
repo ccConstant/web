@@ -22,6 +22,8 @@ include 'productController.php';
 include 'userController.php';
 include 'orderController.php';
 include 'adminController.php';
+include 'FacturePDF.php';
+
 // on lit une action en parametre
 // par defaut, 'list'
 $action = $_GET['action'] ?? 'welcome';
@@ -54,10 +56,10 @@ switch ($action) {
         ));
         break;
     case "list": 
-        list_action($twig, $categorie, $product, $connected);
+        list_action($twig, $categorie, $product, $connected, $isAdmin);
         break;
     case "detail":
-        detail_action($product,$twig, $_GET['id'], $connected);
+        detail_action($product,$twig, $_GET['id'], $connected, $isAdmin);
         break;
     case "addToCart":
         if(!isset($_SESSION['cart'])){
@@ -100,9 +102,20 @@ switch ($action) {
             'connected' => $connected,
             'admin' => $isAdmin,
         ));
-        if($_SESSION['cart']!=null){
-            foreach($_SESSION['cart'] as $key => $value){
-                if($value!=0){
+        if (isset($_SESSION['admin']) && $_SESSION['admin']!=null){
+            $template = $twig->load('cart.twig');
+            echo $template->render(array(
+                'message' => "Vous ne pouvez pas commander en tant qu'admin ! ",
+            ));
+        }else{
+            $count=0;
+            if($_SESSION['cart']!=null){
+                foreach($_SESSION['cart'] as $key => $value){
+                    if($value==0){
+                        $count++;
+                    }
+                }
+                if ($count!=count($_SESSION['cart'])){
                     if ($connected){
                         $user=$user->get_user_by_id($_SESSION['user']);
                         $template = $twig->load('buyConnected.twig');
@@ -111,21 +124,25 @@ switch ($action) {
                             
                         ));
                     }else{
-                        
                         $template = $twig->load('buyNotConnected.twig');
                         echo $template->render(array(
                         ));
                     }
+                }else{
+                    $template = $twig->load('welcome.twig');
+                    echo $template->render(array(
+                    ));
                 }
+            }else{
+                $template = $twig->load('welcome.twig');
+                echo $template->render(array(
+                ));
             }
-        }else{
-            $template = $twig->load('welcome.twig');
-            echo $template->render(array(
-            ));
+            
         }
         break;
     case "payment":
-        payment($twig, $_POST, $user, $connected, $deliveryAdresses);
+        payment($twig, $_POST, $user, $connected, $deliveryAdresses, $isAdmin);
         break;
     case "login":
         $template = $twig->load('navbar.twig');
@@ -139,15 +156,16 @@ switch ($action) {
         break;
     case "deleteFromCart" : 
         $_SESSION['cart'][$_GET['id']]=0;
-        cartConsult($twig, $product, $connected);
+        cartConsult($twig, $product, $connected, $isAdmin);
         break;
     case "connectUser":
-        connectUser($twig, $_POST, $login, $connected, $user, $admin);
+        connectUser($twig, $_POST, $login, $connected, $user, $admin, $isAdmin);
         //connecter le user 
         //rediriger vers la page d'accueil
         break ; 
     case "disconnect":
         unset($_SESSION['user']);
+        unset($_SESSION['admin']);
         unset($_SESSION['cart']);
         $template = $twig->load('navbar.twig');
         echo $template->render(array(
@@ -176,10 +194,14 @@ switch ($action) {
         break;
 
     case "order" : 
-        order($twig, $order, $product, $_POST, $connected);
+        order($twig, $order, $product, $_POST, $connected, $isAdmin);
         break;
     case "adminConsult":
         adminConsult($twig, $isAdmin, $connected, $order);
+        break;
+    case "pdf":
+        pdf($product, $user);
+        break;
     default:
     $template = $twig->load('welcome.twig');
 }
