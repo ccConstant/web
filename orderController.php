@@ -58,3 +58,8 @@ function order($twig, $order, $product, $post, $connected, $isAdmin){
           'connected' => true,
         ));
   }
+
+function validateOrder($twig, $order, $isAdmin, $connected){
+  $order->validateOrder($_GET['id']);
+  adminConsult($twig, $isAdmin, $connected, $order) ; 
+}

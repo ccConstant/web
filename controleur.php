@@ -202,6 +202,9 @@ switch ($action) {
     case "pdf":
         pdf($product, $user);
         break;
+    case "validateOrder":
+        validateOrder($twig, $order, $isAdmin, $connected);
+        break;
     default:
     $template = $twig->load('welcome.twig');
 }
