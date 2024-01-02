@@ -9,19 +9,42 @@
     </head>
 
 
-<body >
-    {% if orders is not empty %}
+<body>
+
+{% if orders is not empty %}
+    <div class="container">
+        <h1>Liste des commandes</h1>
         {% for order in orders %}
-            order.id : {{ order.id }} <br>
-            Confirmer le paiment
+            <div class="order-container">
+                <h3>Commande {{ order.id }}</h3>
+                <p><strong>Nom du client:</strong> {{ order.surname }}</p>
+                <p><strong>Prénom du client:</strong> {{ order.forname}}</p>
+                <p><strong>Montant:</strong> {{ order.price }} €</p>
+                <button onclick="confirmPayment({{ order.id }})">Confirmer le paiement</button>
+            </div>
         {% endfor %}
-    {% endif %}
-        
-    
+    </div>
+{% else %}
+    <p>Aucune commande à afficher.</p>
+{% endif %}
+
 </body>
 </html>
 
 <style>
+
+.container {
+        max-width: 800px;
+        margin: 0 auto;
+}
+
+.order-container {
+        border: 1px solid #ddd;
+        padding: 10px;
+        margin-bottom: 20px;
+}
+
+
 
 .introduction {
     
