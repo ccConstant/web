@@ -20,7 +20,7 @@
                 <p><strong>Nom du client:</strong> {{ order.surname }}</p>
                 <p><strong>Prénom du client:</strong> {{ order.forname}}</p>
                 <p><strong>Montant:</strong> {{ order.price }} €</p>
-                <button onclick="confirmPayment({{ order.id }})">Confirmer le paiement</button>
+                <a href="controleur.php?action=validateOrder&id={{order.id}}"><button class="btn btn-primary" >Confirmer le paiement </button></a>
             </div>
         {% endfor %}
     </div>

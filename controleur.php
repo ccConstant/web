@@ -21,7 +21,6 @@ $twig->addExtension(new \Twig\Extension\DebugExtension());
 include 'productController.php';
 include 'userController.php';
 include 'orderController.php';
-include 'adminController.php';
 include 'FacturePDF.php';
 
 // on lit une action en parametre
@@ -197,13 +196,13 @@ switch ($action) {
         order($twig, $order, $product, $_POST, $connected, $isAdmin);
         break;
     case "adminConsult":
-        adminConsult($twig, $isAdmin, $connected, $order);
+        adminConsult($twig, $isAdmin, $connected, $order, $user);
         break;
     case "pdf":
         pdf($product, $user);
         break;
     case "validateOrder":
-        validateOrder($twig, $order, $isAdmin, $connected);
+        validateOrder($twig, $order, $isAdmin, $connected, $user);
         break;
     default:
     $template = $twig->load('welcome.twig');

@@ -59,7 +59,31 @@ function order($twig, $order, $product, $post, $connected, $isAdmin){
         ));
   }
 
-function validateOrder($twig, $order, $isAdmin, $connected){
-  $order->validateOrder($_GET['id']);
-  adminConsult($twig, $isAdmin, $connected, $order) ; 
+function validateOrder($twig, $order, $isAdmin, $connected, $user){
+  $order->validate_order($_GET['id']);
+  adminConsult($twig, $isAdmin, $connected, $order, $user) ; 
+}
+
+function adminConsult($twig, $isAdmin, $connected, $order, $user){
+    
+  $orders=$order->get_orders();
+  $data=array();
+  foreach ($orders as $key => $value) {
+    $data[$key]['price']=$orders[$key]->total;  
+    $data[$key]['date']=$orders[$key]->date;
+    $data[$key]['id']=$orders[$key]->id;
+    $customer=$user->get_user_by_id($orders[$key]->customer_id);
+    $data[$key]['surname']=$customer[0]->surname;
+    $data[$key]['forname']=$customer[0]->forname;
+  }
+  
+  $template = $twig->load('navbar.twig');
+  echo $template->render(array(
+      'connected' => $connected,
+      'admin' => $isAdmin,
+  ));
+  $template = $twig->load('adminConsult.twig');
+  echo $template->render(array(
+      'orders' => $data,
+  ));
 }
